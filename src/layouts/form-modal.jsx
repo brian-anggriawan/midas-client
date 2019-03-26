@@ -21,8 +21,7 @@ class formModal extends React.Component{
     render(){
         return (
             <React.Fragment>
-            <Button color="primary" onClick={this.mode}> {this.props.captionbtn} </Button>  
-            {console.log(this.state)}        
+            <Button color="primary" onClick={this.mode}> {this.props.captionbtn} </Button>    
             <Modal
                 className = 'modal-dialog-centered'
                 isOpen = {this.state.modal}
@@ -46,7 +45,7 @@ class formModal extends React.Component{
                     {this.props.children}
                 </div>
                 <div className='modal-footer'>
-                    <Button color='primary' type='button'>Simpan</Button>
+                    <Button color='primary' type='button' onClick={this.props.action}>Simpan</Button>
                     <Button color='secondary' data-dismiss='modal' type='button' onClick={this.mode}>Close</Button>
                 </div>
             </Modal>
