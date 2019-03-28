@@ -12,7 +12,7 @@ class formRepository extends React.Component{
        jenis = document.getElementById('jenis').value,
        ket = document.getElementById('ket').value;
 
-       fetch('http://localhost:4000/repository',{
+       fetch('http://192.168.40.88:4000/repository',{
          method: 'post',
          headers: { 'Content-Type':'application/json'},
          body: JSON.stringify({

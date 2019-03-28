@@ -26,7 +26,7 @@ class listFile extends React.Component{
     
     
       componentDidMount(){
-        fetch('http://localhost:4000/repository',{
+        fetch('http://192.168.40.88:4000/repository',{
           method:'get',
           headers: { 'Content-Type':'application/json'}
         })
@@ -39,7 +39,7 @@ class listFile extends React.Component{
       }
 
       Showlist = (kategori) =>{
-        fetch('http://localhost:4000/uploadfile/' + kategori , {
+        fetch('http://192.168.40.88:4000/uploadfile/' + kategori , {
           method: 'get',
           headers: { 'Content-Type':'application/json'}
         })
@@ -55,7 +55,7 @@ class listFile extends React.Component{
         let id = this.state.groupfile[rowIndex].VCIDREPO,
             tanggal = this.state.groupfile[rowIndex].DTPERIOD;
 
-            fetch('http://localhost:4000/uploadfiledetail/'+ id , {
+            fetch('http://192.168.40.88:4000/uploadfiledetail/'+ id , {
               method: 'get',
               headers: { 'Content-Type':'application/json'}
             })
@@ -111,10 +111,6 @@ class listFile extends React.Component{
               }
               </Col>
               <Col sm="9">
-              <div className="row">
-              <div className="col-md-12">
-                  <div className="card">
-                    <div className="content">
                       <BootstrapTable
                         data={this.state.groupfile}
                         bordered={false}
@@ -149,10 +145,6 @@ class listFile extends React.Component{
                           </TableHeaderColumn>
                     
                       </BootstrapTable>
-                    </div>
-                  </div>
-                </div>
-              </div>  
               </Col>
             </Row>
           </Pageadmin>

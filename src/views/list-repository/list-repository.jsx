@@ -14,7 +14,7 @@ class listRepository extends React.Component {
 
 
   componentDidMount(){
-    fetch('http://localhost:4000/repository',{
+    fetch('http://192.168.40.88:4000/repository',{
       method:'get',
       headers: { 'Content-Type':'application/json'}
     })

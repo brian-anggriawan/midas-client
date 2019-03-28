@@ -6,14 +6,19 @@ import 'react-drop-zone/dist/styles.css';
 
 
 class formUpload extends React.Component{
-
-    state = {
+    constructor(){
+      super()
+      this.state = {
         files: [],
         kategori: []
       }
 
+
+    }
+   
+
       componentDidMount(){
-        fetch('http://localhost:4000/uploadsckategori',{
+        fetch('http://192.168.40.88:4000/uploadsckategori',{
           method:'get',
           headers: { 'Content-Type':'application/json'}
         })
@@ -30,23 +35,20 @@ class formUpload extends React.Component{
       }
 
       Save = ()=>{
-        let name = document.getElementById('description').value,
-            kategori = document.getElementById('kategori').value;
+            let formData = new FormData();
+            let count = this.state.files.length;
 
-            fetch('http://localhost:4000/uploadfile',{
+            for (let i = 0; i <= (count - 1); i++){
+              formData.append('file', this.state.files[i])
+            }
+
+           
+
+            fetch('http://192.168.40.88:4000/uploadfile',{
               method: 'post',
-              headers: { 'Content-Type':'application/json'},
-              body: JSON.stringify({
-               name: name , 
-               kategori: kategori
-              })
+              body: formData
             })
-            .then(res => res.json())
-            .then(data => {
-               if (data) {
-                 window.location.href ="/";
-               }
-            })
+            
         }
 
 
@@ -61,7 +63,7 @@ class formUpload extends React.Component{
                   <Input type="select" id="kategori">
                   <option value=''>Pilih Kategori</option>   
                     {
-                      this.state.kategori.map(kategori =>
+                      this.state.kategori.map(kategori=>
                         <option key = {kategori.VCIDREPO} value={kategori.VCIDREPO}>{kategori.VCDESCRIPTION}</option>   
                       )
                     }
