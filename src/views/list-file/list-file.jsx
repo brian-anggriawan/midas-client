@@ -55,7 +55,7 @@ class listFile extends React.Component{
         let id = this.state.groupfile[rowIndex].VCIDREPO,
             tanggal = this.state.groupfile[rowIndex].DTPERIOD;
 
-            fetch('http://192.168.40.88:4000/uploadfiledetail/'+ id , {
+            fetch('http://192.168.40.88:4000/uploadfiledetail/'+ id +'/'+tanggal, {
               method: 'get',
               headers: { 'Content-Type':'application/json'}
             })
@@ -65,11 +65,7 @@ class listFile extends React.Component{
                 filedetail: data
               })
             })
-
             
-
-            
-
             this.setState({
               modal: true
             })  

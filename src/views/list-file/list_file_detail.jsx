@@ -1,6 +1,8 @@
 import React from 'react';
 import Baselistmmodal from 'layouts/list_modal.jsx';
 import { BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
+import {Button} from 'reactstrap';
+import download from 'downloadjs';
 
 
 class listfiledetail extends React.Component{
@@ -9,6 +11,28 @@ class listfiledetail extends React.Component{
         this.state = {
             
         }
+    }
+
+    action(cell, row, enumObject, rowIndex){
+        return(
+            <>
+                <Button type="button" size="sm" onClick={() => this.Downloadfile(cell, row, rowIndex)} outline color="success">Download</Button>
+            </>
+        )
+    }
+
+    async Downloadfile(cell, row, rowIndex){
+        let id = this.props.data[rowIndex].VCIDFILE;
+        let name = this.props.data[rowIndex].VCORIGINALNAME;
+
+       let res = await fetch('http://192.168.40.88:4000/downloadfile/'+id);
+       let blob = await res.blob();
+       download(blob , name);
+
+
+       
+  
+
     }
 
 
@@ -34,6 +58,12 @@ class listfiledetail extends React.Component{
                                 pagination={true}
                                 options={options}>
                                 <TableHeaderColumn
+                                    dataField='DTPERIOD'
+                                    width='16%'
+                                    dataSort>
+                                    Periode
+                                </TableHeaderColumn>
+                                <TableHeaderColumn
                                     dataField='DTUPLOAD'
                                     width='16%'
                                     isKey = {true}
@@ -41,21 +71,20 @@ class listfiledetail extends React.Component{
                                     Tanggal Upload
                                 </TableHeaderColumn>
                                 <TableHeaderColumn
-                                    dataField='KATEGORI'
+                                    dataField='REPO'
                                     width='16%'
                                     dataSort>
                                     Kategori
                                 </TableHeaderColumn>
                                 <TableHeaderColumn
-                                    dataField='COUNTFILE'
+                                    dataField='VCORIGINALNAME'
                                     width='16%'
                                     dataSort>
                                     File Name
                                 </TableHeaderColumn>
                                 <TableHeaderColumn
-                                    dataField='COUNTFILE'
-                                    width='16%'
-                                    dataSort>
+                                    dataFormat={this.action.bind(this)}
+                                    width='16'>
                                     Action
                                 </TableHeaderColumn>
                             </BootstrapTable>
