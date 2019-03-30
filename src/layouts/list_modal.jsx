@@ -3,6 +3,7 @@ import {
     Button,
     Modal
 } from 'reactstrap';
+import 'app.css'
 
 class formModal extends React.Component{
     constructor(props){
@@ -16,7 +17,7 @@ class formModal extends React.Component{
         return (
             <React.Fragment>  
             <Modal
-                className = 'modal-dialog-centered'
+                className = 'modal-dialog-centered v_lg'
                 isOpen = {this.props.modal}
                 toggle = {this.props.mode}
                 size ='lg'

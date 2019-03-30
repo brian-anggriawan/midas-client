@@ -4,6 +4,7 @@ import Pageadmin from 'layouts/page-admin';
 import Formfile from './form-file';
 import Listfiledetail from './list_file_detail';
 import { Button , Row , Col , Card , CardText} from 'reactstrap';
+import app from 'app';
 
 class listFile extends React.Component{
     constructor(){
@@ -26,46 +27,36 @@ class listFile extends React.Component{
     
     
       componentDidMount(){
-        fetch('http://192.168.40.88:4000/repository',{
-          method:'get',
-          headers: { 'Content-Type':'application/json'}
-        })
-        .then( res  => res.json())
-        .then(data =>{
-          this.setState({
-            repo: data
-          })
-        })
+
+        app.apiGet('repository')
+           .then(res =>{
+              this.setState({
+                repo: res
+              })
+           })
       }
 
       Showlist = (kategori) =>{
-        fetch('http://192.168.40.88:4000/uploadfile/' + kategori , {
-          method: 'get',
-          headers: { 'Content-Type':'application/json'}
-        })
-        .then(res => res.json())
-        .then(data =>{
-          this.setState({
-            groupfile: data
-          })
-        })
+
+        app.apiGet1('uploadfile',kategori)
+           .then(res =>{
+            this.setState({
+              groupfile: res
+            })
+           })
       }
 
       onClickProductSelected(cell, row, rowIndex){
         let id = this.state.groupfile[rowIndex].VCIDREPO,
             tanggal = this.state.groupfile[rowIndex].DTPERIOD;
 
-            fetch('http://192.168.40.88:4000/uploadfiledetail/'+ id +'/'+tanggal, {
-              method: 'get',
-              headers: { 'Content-Type':'application/json'}
-            })
-            .then(res => res.json())
-            .then(data =>{
-              this.setState({
-                filedetail: data
-              })
-            })
-            
+            app.apiGet2('uploadfiledetail' , id , tanggal)
+               .then(res =>{
+                this.setState({
+                  filedetail: res
+                })
+               })
+
             this.setState({
               modal: true
             })  

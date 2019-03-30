@@ -3,6 +3,7 @@ import Baselistmmodal from 'layouts/list_modal.jsx';
 import { BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import {Button} from 'reactstrap';
 import download from 'downloadjs';
+import app from 'app';
 
 
 class listfiledetail extends React.Component{
@@ -25,13 +26,9 @@ class listfiledetail extends React.Component{
         let id = this.props.data[rowIndex].VCIDFILE;
         let name = this.props.data[rowIndex].VCORIGINALNAME;
 
-       let res = await fetch('http://192.168.40.88:4000/downloadfile/'+id);
+       let res = await fetch(app.proxy+'downloadfile/'+id);
        let blob = await res.blob();
        download(blob , name);
-
-
-       
-  
 
     }
 

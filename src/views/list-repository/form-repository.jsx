@@ -2,33 +2,32 @@ import React from 'react';
 import Baseformmodal from 'layouts/form-modal.jsx';
 import { FormGroup ,Input ,Label} from 'reactstrap';
 import 'react-drop-zone/dist/styles.css';
+import app from 'app';
 
 
 class formRepository extends React.Component{
   
   Save = () =>{
    let name = document.getElementById('name').value,
-       standart = document.getElementById('standart').value,
        jenis = document.getElementById('jenis').value,
        ket = document.getElementById('ket').value;
 
-       fetch('http://192.168.40.88:4000/repository',{
-         method: 'post',
-         headers: { 'Content-Type':'application/json'},
-         body: JSON.stringify({
-          name: name , 
-          file: standart , 
-          jenis: jenis , 
-          ket: ket
+       if (name && jenis  && ket ) {
+         app.apiPostJson('repository',{
+            name: name , 
+            jenis: jenis , 
+            ket: ket 
          })
-       })
-       .then(res => res.json())
-       .then(data => {
-          if (data) {
-            window.location.href ="/";
-          }
-       })
-      }
+         .then(res =>{
+            if (res) {
+               app.msgok('Berhasil Disimpan','/')
+            }
+         }) 
+  
+       }else {
+         app.msgerror('Masih Ada Yang Kosong')
+       }  
+   }
 
     render(){
         return(
@@ -36,15 +35,11 @@ class formRepository extends React.Component{
                <Baseformmodal title={'FORM KATEGORI'} captionbtn={'Tambah Kategori'} action={this.Save}>
                <FormGroup>
                   <Label>Nama Master Report</Label>
-                  <Input placeholder="Master Report" type="text" id="name" />
-               </FormGroup>
-               <FormGroup>
-                  <Label>Standart File Name</Label>
-                  <Input placeholder="File Name" type="text" id="standart"/>
+                  <Input placeholder="Master Report" type="text" id="name" required/>
                </FormGroup>
                <FormGroup>
                   <Label>Jenis Report</Label>
-                  <Input type="select" id="jenis">
+                  <Input type="select" id="jenis" required>
                     <option value="">Pilih Jenis Report</option>
                     <option value="Harian">Harian</option>
                     <option value="Mingguan">Mingguan</option>
@@ -54,7 +49,7 @@ class formRepository extends React.Component{
                </FormGroup>
                 <FormGroup>
                   <Label>Keterangan</Label>
-                  <Input placeholder="Keterangan" type="textarea" id="ket"/>
+                  <Input placeholder="Keterangan" type="textarea" id="ket" required/>
                </FormGroup>
               </Baseformmodal>
            </div>

@@ -4,6 +4,7 @@ import { FormGroup , Input , InputGroup , InputGroupAddon, InputGroupText } from
 import { StyledDropZone } from 'react-drop-zone';
 import ReactDatetime from "react-datetime";
 import 'react-drop-zone/dist/styles.css';
+import app from 'app';
 
 
 class formUpload extends React.Component{
@@ -12,7 +13,8 @@ class formUpload extends React.Component{
       this.state = {
         files: [],
         kategori: [],
-        tanggal:''
+        tanggal:'',
+        encode:''
       }
 
 
@@ -20,20 +22,29 @@ class formUpload extends React.Component{
    
 
       componentDidMount(){
-        fetch('http://192.168.40.88:4000/uploadsckategori',{
-          method:'get',
-          headers: { 'Content-Type':'application/json'}
-        })
-        .then( res  => res.json())
-        .then(data =>{
-          this.setState({
-            kategori: data
-          })
-        })
+
+        app.apiGet('uploadsckategori')
+           .then(res =>{
+              this.setState({
+                kategori: res
+              })
+           });
+        
       }
     
       addFile = (file, text) => {
         this.setState({ files: [...this.state.files, file] })
+        
+        let reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = ()=>{
+              this.setState({
+                encode: reader.result
+              })
+            }
+
+
+        
       }
 
       Save = ()=>{
@@ -43,16 +54,22 @@ class formUpload extends React.Component{
               formData.append('description', document.getElementById('description').value );
               formData.append('kategori', document.getElementById('kategori').value );
               formData.append('tanggal',this.state.tanggal);
-        
+              formData.append('blob' , this.state.encode);
 
-            fetch('http://192.168.40.88:4000/uploadfile',{
-              method: 'post',
-              body: formData,
-            })
-            .then(res => res.json())
-            .then(data =>{
-              window.location.href="/admin/listfile";
-            })      
+              let des = formData.get('description'),
+                  kategori = formData.get('kategori'),
+                  tanggal = formData.get('tanggal'),
+                  file = formData.get('file');
+
+              if (des && kategori && tanggal && file !=='undefined' ) { 
+                app.apiPostFormdata('uploadfile',formData)
+                .then(res =>{
+                  app.msgok('berhasil','/admin/listfile')
+                }) 
+                
+              }else{
+                app.msgerror('Masih Ada Yang Kosong')
+              }
         }
       
       getDate =(date)=>{

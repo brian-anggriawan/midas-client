@@ -2,6 +2,7 @@ import React from "react";
 import { BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import FormRepository from './form-repository';
 import Pageadmin from 'layouts/page-admin';
+import app from 'app';
 
 class listRepository extends React.Component {
   constructor(){
@@ -14,16 +15,13 @@ class listRepository extends React.Component {
 
 
   componentDidMount(){
-    fetch('http://192.168.40.88:4000/repository',{
-      method:'get',
-      headers: { 'Content-Type':'application/json'}
-    })
-    .then( res  => res.json())
-    .then(data =>{
-      this.setState({
-        repo: data
-      })
-    })
+
+    app.apiGet('repository')
+       .then(res => {
+        this.setState({
+          repo: res
+        })
+       });
   }
 
   render() {
@@ -59,12 +57,6 @@ class listRepository extends React.Component {
                             width='20%'
                             dataSort>
                             Jenis Laporan
-                          </TableHeaderColumn>
-                          <TableHeaderColumn
-                            dataField='VCSTANDARTFILENAME'
-                            width='20%'
-                            dataSort>
-                            Standart File Name
                           </TableHeaderColumn>
                           <TableHeaderColumn
                             dataField='TXKET'
