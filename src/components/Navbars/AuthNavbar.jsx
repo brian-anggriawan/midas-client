@@ -15,7 +15,7 @@ class AdminNavbar extends React.Component {
           expand="md"
         >
           <Container className="px-4">
-            <NavbarBrand to="/" tag={Link}>
+            <NavbarBrand to="/auth" tag={Link}>
               <img alt="..." src={require("assets/img/brand/017-email.png")} /> &nbsp; MIDAS
             </NavbarBrand>
           </Container>
