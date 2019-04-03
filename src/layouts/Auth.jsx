@@ -1,6 +1,4 @@
 import React from "react";
-import { Route } from "react-router-dom";
-// reactstrap components
 import {  } from "reactstrap";
 import {
   Button,
@@ -17,38 +15,53 @@ import {
   Col ,
   Container
 } from "reactstrap";
-
-// core components
-import AuthFooter from "components/Footers/AuthFooter.jsx";
+import app from 'app';
 
 
 class Auth extends React.Component {
+  constructor(){
+    super()
+    this.state = {
+      name:'',
+      pass: ''
+    }
+  }
+
   componentDidMount() {
     document.body.classList.add("bg-default");
   }
   componentWillUnmount() {
     document.body.classList.remove("bg-default");
   }
-  getRoutes = routes => {
-    return routes.map((prop, key) => {
-      if (prop.layout === "/auth") {
-        return (
-          <Route
-            path={prop.layout + prop.path}
-            component={prop.component}
-            key={key}
-          />
-        );
-      } else {
-        return null;
-      }
-    });
-  };
+
+
+
   render() {
+    
+    let name =  (e)=>{
+      this.setState({
+        name: e.target.value
+      })
+    }
+
+    let pass = (e)=>{
+      this.setState({
+        pass: e.target.value
+      })
+    }
+
+
+    let login = ()=>{
+        let name = this.state.name,
+            pass = this.state.pass;
+        app.login(name , pass)
+    }
+
     return (
       <>
         <div className="main-content">
-          <div className="header bg-gradient-info py-5 py-lg-2">
+        
+          <div className="header bg-gradient-info py-5 py-lg-3">
             <Container>
               <div className="header-body text-center mb-7">
                 <Row className="justify-content-center">
@@ -73,7 +86,7 @@ class Auth extends React.Component {
                                   <i className="ni ni-email-83" />
                                 </InputGroupText>
                               </InputGroupAddon>
-                              <Input placeholder="Username" type="text" />
+                              <Input placeholder="Username" type="text"  onChange={name}/>
                             </InputGroup>
                           </FormGroup>
                           <FormGroup>
@@ -83,11 +96,11 @@ class Auth extends React.Component {
                                   <i className="ni ni-lock-circle-open" />
                                 </InputGroupText>
                               </InputGroupAddon>
-                              <Input placeholder="Password" type="password" />
+                              <Input placeholder="Password" type="password" onChange = {pass} />
                             </InputGroup>
                           </FormGroup>
                           <div className="text-center">
-                            <Button className="my-4" color="primary" type="button">
+                            <Button className="my-4" color="primary" type="button" onClick={login}>
                               Login
                             </Button>
                           </div>
@@ -99,8 +112,7 @@ class Auth extends React.Component {
               </div>
             </Container>
           </div>
-        </div>
-        <AuthFooter />
+        </div> 
       </>
     );
   }

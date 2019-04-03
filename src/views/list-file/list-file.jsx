@@ -3,7 +3,7 @@ import { BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import Pageadmin from 'layouts/page-admin';
 import Formfile from './form-file';
 import Listfiledetail from './list_file_detail';
-import { Button , Row , Col , Card , CardText} from 'reactstrap';
+import { Button , Row , Col } from 'reactstrap';
 import app from 'app';
 
 class listFile extends React.Component{
@@ -72,10 +72,6 @@ class listFile extends React.Component{
       }
     
       render() {
-
- 
-
-   
      
         const options = {
           sizePerPage: 10,
@@ -91,12 +87,16 @@ class listFile extends React.Component{
               <Col sm="3">
               {
                 this.state.repo.map(repo =>
-                  <Card body key={repo.VCIDREPO} onClick={()=> this.Showlist(repo.VCIDREPO)} style={{ cursor: 'pointer'}}>
-                    <CardText>{repo.VCDESCRIPTION}</CardText>
-                  </Card>
+                  <div key={repo.VCIDREPO}>
+                    <br/><Button outline color="primary"  onClick={()=> this.Showlist(repo.VCIDREPO)} style={{width: '100%'}}>
+                      {repo.VCDESCRIPTION}
+                    </Button>
+                  </div>
                 )
               }
+         
               </Col>
+            
               <Col sm="9">
                       <BootstrapTable
                         data={this.state.groupfile}

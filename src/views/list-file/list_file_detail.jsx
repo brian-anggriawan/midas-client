@@ -26,8 +26,12 @@ class listfiledetail extends React.Component{
         let id = this.props.data[rowIndex].VCIDFILE;
         let name = this.props.data[rowIndex].VCORIGINALNAME;
 
-       let res = await fetch(app.proxy+'downloadfile/'+id);
+       let res = await fetch(app.proxy+'downloadfile/'+id ,{
+           method: 'get',
+           headers: app.head2
+       });
        let blob = await res.blob();
+    
        download(blob , name);
 
     }

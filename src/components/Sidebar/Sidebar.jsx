@@ -1,6 +1,7 @@
 import React from "react";
 import { NavLink as NavLinkRRD, Link } from "react-router-dom";
 import { PropTypes } from "prop-types";
+import app from 'app';
 
 import {
   Collapse,
@@ -136,7 +137,7 @@ class Sidebar extends React.Component {
             <Nav navbar>{this.createLinks(routes)}</Nav>
             {/* Divider */}
             <hr className="my-1" /><br/>
-            <Button color="danger" type="button">Logout</Button>
+            <Button color="danger" type="button" onClick={app.logout}>Logout</Button>
             {/* Heading */}
           </Collapse>
         </Container>

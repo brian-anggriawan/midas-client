@@ -17,10 +17,8 @@ class formUpload extends React.Component{
         encode:''
       }
 
-
     }
    
-
       componentDidMount(){
 
         app.apiGet('uploadsckategori')
@@ -28,9 +26,9 @@ class formUpload extends React.Component{
               this.setState({
                 kategori: res
               })
-           });
-        
+           });       
       }
+
     
       addFile = (file, text) => {
         this.setState({ files: [...this.state.files, file] })
@@ -41,10 +39,7 @@ class formUpload extends React.Component{
               this.setState({
                 encode: reader.result
               })
-            }
-
-
-        
+            }     
       }
 
       Save = ()=>{
@@ -53,6 +48,7 @@ class formUpload extends React.Component{
               formData.append('file', this.state.files[0]);
               formData.append('description', document.getElementById('description').value );
               formData.append('kategori', document.getElementById('kategori').value );
+              formData.append('minggu' , document.getElementById('minggu').value);
               formData.append('tanggal',this.state.tanggal);
               formData.append('blob' , this.state.encode);
 
@@ -79,6 +75,22 @@ class formUpload extends React.Component{
 
       }
       
+      selectMounths = (e)=>{
+        let data =  e.target.value;
+        let id = document.getElementById('minggu');
+
+        app.apiGet1('kategoribyid',data)
+           .then(data =>{
+             if (data[0].VCJENISREPO !== 'Mingguan') {
+               id.style.display ='none'
+             }else{
+               id.style.display =''
+             }
+           })
+    
+
+      }
+ 
 
     render(){
         return(
@@ -104,13 +116,22 @@ class formUpload extends React.Component{
                   <Input id="description" placeholder="Description" type="text" />
                 </FormGroup>
                 <FormGroup>
-                  <Input type="select" id="kategori">
+                  <Input type="select" id="kategori" onChange={this.selectMounths}>
                   <option value=''>Pilih Kategori</option>   
                     {
                       this.state.kategori.map(kategori=>
-                        <option key = {kategori.VCIDREPO} value={kategori.VCIDREPO}>{kategori.VCDESCRIPTION}</option>   
+                        <option key = {kategori.VCIDREPO} value={kategori.VCIDREPO}>{kategori.VCDESCRIPTION+' - '+kategori.VCJENISREPO}</option>   
                       )
                     }
+                  </Input>
+               </FormGroup>
+               <FormGroup>
+                  <Input type="select" id="minggu" style={{display: 'none'}}>
+                      <option value =''>Minggu Ke</option>
+                      <option value ='Minggu Ke 1'>Minggu Ke 1</option>
+                      <option value ='Minggu Ke 2'>Minggu Ke 2</option>
+                      <option value ='Minggu Ke 3'>Minggu Ke 3</option>
+                      <option value ='Minggu Ke 4'>Minggu Ke 4</option>
                   </Input>
                </FormGroup>
                 <StyledDropZone onDrop={this.addFile} /><br/>
