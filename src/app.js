@@ -1,5 +1,6 @@
 import sw from 'sweetalert2';
 import Decode from 'jwt-decode';
+const redux  =  require('redux');
 
 
 let encode = (file)=>{
@@ -18,10 +19,8 @@ return reader.readAsDataURL(file)
 
     let proxy = 'http://192.168.40.88:4000/api/';
     let proxylogin = 'http://192.168.40.88:4000/login';
-    /*let header = {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-    }*/
+    let browserStorage = JSON.parse(localStorage.getItem('user'));
+    let dataUser = browserStorage; 
 
     let token = 'Bearer ' + localStorage.getItem('token');
     let head1 = {
@@ -126,6 +125,38 @@ return reader.readAsDataURL(file)
     }
 /* SWET ALERT */
 
+/* REDUX */
+
+let createStore = redux.createStore;
+let reduxState = {
+    user: []
+}
+
+let rootReducer = (state = reduxState , action)=>{
+    switch(action.type){
+        case 'ADD_USER':
+            return{
+                ...state,
+                user: action.data
+            }
+        case 'LOGOUT':
+            return{
+                ...state,
+                user: []
+            }
+        default:
+            return state
+    }
+
+}
+
+let store = createStore(rootReducer);
+
+
+
+
+/* REDUX */
+
 /* Auth */
 
     let login = (user , pass)=>{
@@ -137,6 +168,7 @@ return reader.readAsDataURL(file)
                 .then(res =>{
                     if (res.sucess) {
                         localStorage.setItem('token',res.token)
+                        localStorage.setItem('user', JSON.stringify(res.data))
                         msgok('Berhasil Login','/')
                     }else{
                         msgerror('Username Dan Password Salah')
@@ -167,13 +199,12 @@ return reader.readAsDataURL(file)
         }
     }
 
-    let getProfile = ()=>{
-        return Decode(localStorage.getItem('token'));
-    }
 
     let logout = ()=>{
-        msgok('Berhasil Logout','/login')
-        localStorage.removeItem('token')
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        msgok('Berhasil Logout','/login');
+        
       
     }
 
@@ -192,7 +223,8 @@ export default { encode ,
                  msgok ,
                  login , 
                  loggedin ,
-                 getProfile ,
                  logout,
                  head1,
+                 store,
+                 dataUser,
                  head2}

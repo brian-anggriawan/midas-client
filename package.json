@@ -64,6 +64,7 @@
     "react-scripts": "2.1.8",
     "react-validation": "^3.0.7",
     "reactstrap": "7.1.0",
+    "redux": "^4.0.1",
     "sweetalert2": "^8.7.0"
   },
   "devDependencies": {
