@@ -1,29 +1,57 @@
 import React from 'react';
 import Baseformmodal from 'layouts/form-modal.jsx';
-import { FormGroup ,Input ,Label} from 'reactstrap';
+import { FormGroup ,Input ,Label ,Form} from 'reactstrap';
 import 'react-drop-zone/dist/styles.css';
 import app from 'app';
+import Serilaze from 'form-serialize';
 
 
 class formRepository extends React.Component{
+   constructor(){
+      super()
+      this.state ={
+         sbu: [],
+         dpt: []
+      }
+   }
+
+
+   componentDidMount(){
+      app.apiGet('repository/sbu/sbu')
+         .then(res =>{
+            this.setState({
+               sbu: res
+            })
+         })
+
+
+        
+   }
+
+   Divisi =(e)=>{
+      let id = e.target.value;
+      app.apiGet1('repository/dpt', id)
+         .then(res =>{
+           this.setState({
+              dpt: res
+           })
+         })
+
+   }
   
   Save = () =>{
-   let name = document.getElementById('name').value,
-       jenis = document.getElementById('jenis').value,
-       ket = document.getElementById('ket').value;
 
-       if (name && jenis  && ket ) {
-         app.apiPostJson('repository',{
-            name: name , 
-            jenis: jenis , 
-            ket: ket 
-         })
+   let form = document.getElementById('form');
+
+   let data = Serilaze(form , { hash: true });
+
+       if (data.name && data.jenis  && data.ket ) {
+         app.apiPostJson('repository',data)
          .then(res =>{
             if (res) {
-               app.msgok('Berhasil Disimpan','/')
+               app.msgok('Berhasil Disimpan','/admin/listrepository')
             }
          }) 
-  
        }else {
          app.msgerror('Masih Ada Yang Kosong')
        }  
@@ -33,24 +61,50 @@ class formRepository extends React.Component{
         return(
            <div>
                <Baseformmodal title={'FORM KATEGORI'} captionbtn={'Tambah Kategori'} action={this.Save}>
-               <FormGroup>
-                  <Label>Nama Master Report</Label>
-                  <Input placeholder="Master Report" type="text" id="name" required/>
-               </FormGroup>
-               <FormGroup>
-                  <Label>Jenis Report</Label>
-                  <Input type="select" id="jenis" required>
-                    <option value="">Pilih Jenis Report</option>
-                    <option value="Harian">Harian</option>
-                    <option value="Mingguan">Mingguan</option>
-                    <option value="Bulanan">Bulanan</option>
-                    <option value="Tahunan">Tahunan</option>
-                  </Input>
-               </FormGroup>
-                <FormGroup>
-                  <Label>Keterangan</Label>
-                  <Input placeholder="Keterangan" type="textarea" id="ket" required/>
-               </FormGroup>
+               <Form id="form">
+                  <FormGroup>
+                     <Label>Nama Master Report</Label>
+                     <Input placeholder="Master Report" type="text" name="name" required/>
+                  </FormGroup>
+                  <FormGroup>
+                     <Label>SBU</Label>
+                     <Input type="select" name="sbu" onChange={this.Divisi} required>
+                        <option value='0'> Pilih SBU </option>
+                        {
+                           this.state.sbu.map(sbu=>
+                              <option key={sbu.SYSTEM_ID} value={sbu.SYSTEM_ID}>{sbu.SBU}</option>
+                           )
+                        }
+                     
+                     </Input>
+                  </FormGroup>
+                  <FormGroup>
+                     <Label>Divisi</Label>
+                     <Input type="select" name="divisi" id="divisi" required>
+                     <option value="">Pilih Divisi</option>
+                     {
+                        this.state.dpt.map(dpt =>
+                              <option key={dpt.SYSTEM_ID} value={dpt.SYSTEM_ID}> {dpt.DIVISION}</option>
+                           )
+                     }
+                     </Input>
+                  </FormGroup>
+                  <FormGroup>
+                     <Label>Jenis Report</Label>
+                     <Input type="select" id="jenis" name="jenis" required>
+                     <option value="">Pilih Jenis Report</option>
+                     <option value="Harian">Harian</option>
+                     <option value="Mingguan">Mingguan</option>
+                     <option value="Bulanan">Bulanan</option>
+                     <option value="Tahunan">Tahunan</option>
+                     </Input>
+                  </FormGroup>
+                  <FormGroup>
+                     <Label>Keterangan</Label>
+                     <Input placeholder="Keterangan" type="textarea" id="ket" name="ket" required/>
+                     <Input  type="hidden" name="user" value={app.dataUser[0].IDLOGIN}/>
+                  </FormGroup>
+               </Form>
               </Baseformmodal>
            </div>
                 

@@ -10,12 +10,15 @@ import Sidebar from "components/Sidebar/Sidebar.jsx";
 import routes from "routes.js";
 
 class Admin extends React.Component {
+
+
   componentDidUpdate(e) {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
     this.refs.mainContent.scrollTop = 0;
   }
   getRoutes = routes => {
+    
     return routes.map((prop, key) => {
       if (prop.layout === "/admin") {
         return (
@@ -24,6 +27,8 @@ class Admin extends React.Component {
             component={prop.component}
             key={key}
           />
+
+         
         );
       } else {
         return null;
@@ -31,6 +36,7 @@ class Admin extends React.Component {
     });
   };
   getBrandText = path => {
+
     for (let i = 0; i < routes.length; i++) {
       if (
         this.props.location.pathname.indexOf(
@@ -42,6 +48,7 @@ class Admin extends React.Component {
     }
     return "Brand";
   };
+
   render() {
     return (
       <>

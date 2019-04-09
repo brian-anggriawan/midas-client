@@ -129,21 +129,18 @@ return reader.readAsDataURL(file)
 
 let createStore = redux.createStore;
 let reduxState = {
-    user: []
+    user: [],
+    modal: false
 }
 
 let rootReducer = (state = reduxState , action)=>{
     switch(action.type){
-        case 'ADD_USER':
+        case 'MODAL':
             return{
                 ...state,
-                user: action.data
+                modal: !state.modal
             }
-        case 'LOGOUT':
-            return{
-                ...state,
-                user: []
-            }
+       
         default:
             return state
     }
@@ -167,6 +164,7 @@ let store = createStore(rootReducer);
         return apiLogin(data)
                 .then(res =>{
                     if (res.sucess) {
+                        localStorage.removeItem('user');
                         localStorage.setItem('token',res.token)
                         localStorage.setItem('user', JSON.stringify(res.data))
                         msgok('Berhasil Login','/')
@@ -202,7 +200,6 @@ let store = createStore(rootReducer);
 
     let logout = ()=>{
         localStorage.removeItem('token');
-        localStorage.removeItem('user');
         msgok('Berhasil Logout','/login');
         
       

@@ -47,7 +47,7 @@ class listfiledetail extends React.Component{
             nextPage: 'Next',
           };
         return(
-            <Baselistmmodal modal = {this.props.modal} mode = {this.props.mode} title ={'List Detail File'}>
+            <Baselistmmodal modal= {this.props.modal} mode ={this.props.mode} title ={'List Detail File'}>
                 <div className="row">
                     <div className="col-md-12">
                         <div className="card">
@@ -82,6 +82,12 @@ class listfiledetail extends React.Component{
                                     width='16%'
                                     dataSort>
                                     File Name
+                                </TableHeaderColumn>
+                                <TableHeaderColumn
+                                    dataField='USER'
+                                    width='16%'
+                                    dataSort>
+                                    User Upload
                                 </TableHeaderColumn>
                                 <TableHeaderColumn
                                     dataFormat={this.action.bind(this)}

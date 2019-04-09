@@ -2,6 +2,7 @@ import React from "react";
 import { BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import FormRepository from './form-repository';
 import Pageadmin from 'layouts/page-admin';
+import { Input } from 'reactstrap';
 import app from 'app';
 
 class listRepository extends React.Component {
@@ -16,7 +17,7 @@ class listRepository extends React.Component {
 
   componentDidMount(){
 
-    app.apiGet('repository')
+    app.apiGet1('repository',app.dataUser[0].IDLOGIN)
        .then(res => {
         this.setState({
           repo: res
@@ -46,23 +47,37 @@ class listRepository extends React.Component {
                         pagination={true}
                         options={options}>
                           <TableHeaderColumn
-                            dataField='VCDESCRIPTION'
+                            dataField='REPOSITORY'
                             width='20%'
                             isKey = {true}
                             dataSort>
                             Description
                           </TableHeaderColumn>
                           <TableHeaderColumn
-                            dataField='VCJENISREPO'
+                            dataField='JENIS_REPO'
                             width='20%'
                             dataSort>
                             Jenis Laporan
                           </TableHeaderColumn>
                           <TableHeaderColumn
-                            dataField='TXKET'
+                            dataField='KETERANGAN'
                             width='20%'
                             dataSort>
                             Keterangan
+                          </TableHeaderColumn>
+                          <TableHeaderColumn
+                            dataField='SBU'
+                            width='20%'
+                            filter={ { type: 'TextFilter'} }
+                            dataSort>
+                            SBU
+                          </TableHeaderColumn>
+                          <TableHeaderColumn
+                            dataField='DIVISION'
+                            width='20%'
+                            filter={ { type: 'TextFilter'} }
+                            dataSort>
+                            Division
                           </TableHeaderColumn>
                       </BootstrapTable>
                 </div>

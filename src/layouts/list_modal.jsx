@@ -3,7 +3,8 @@ import {
     Button,
     Modal
 } from 'reactstrap';
-import 'app.css'
+import 'app.css';
+
 
 class formModal extends React.Component{
     constructor(props){

@@ -6,6 +6,8 @@ import ReactDatetime from "react-datetime";
 import 'react-drop-zone/dist/styles.css';
 import app from 'app';
 
+ 
+
 
 class formUpload extends React.Component{
     constructor(){
@@ -21,7 +23,7 @@ class formUpload extends React.Component{
    
       componentDidMount(){
 
-        app.apiGet('uploadsckategori')
+        app.apiGet1('uploadfile/repo',app.dataUser[0].IDLOGIN)
            .then(res =>{
               this.setState({
                 kategori: res
@@ -51,6 +53,7 @@ class formUpload extends React.Component{
               formData.append('minggu' , document.getElementById('minggu').value);
               formData.append('tanggal',this.state.tanggal);
               formData.append('blob' , this.state.encode);
+              formData.append('user' , app.dataUser[0].IDLOGIN);
 
               let des = formData.get('description'),
                   kategori = formData.get('kategori'),
@@ -60,7 +63,7 @@ class formUpload extends React.Component{
               if (des && kategori && tanggal && file !=='undefined' ) { 
                 app.apiPostFormdata('uploadfile',formData)
                 .then(res =>{
-                  app.msgok('berhasil','/admin/listfile')
+                  app.msgok('berhasil','/admin/index')
                 }) 
                 
               }else{
@@ -81,14 +84,18 @@ class formUpload extends React.Component{
 
         app.apiGet1('kategoribyid',data)
            .then(data =>{
-             if (data[0].VCJENISREPO !== 'Mingguan') {
-               id.style.display ='none'
-             }else{
-               id.style.display =''
+             if (data.length > 0){
+                if (data[0].VCJENISREPO !== 'Mingguan') {
+                  id.style.display ='none'
+                }else{
+                  id.style.display =''
+                }
              }
-           })
-    
+        })
+      }
 
+      test =()=>{
+        console.log(this.state.files)
       }
  
 
@@ -117,10 +124,10 @@ class formUpload extends React.Component{
                 </FormGroup>
                 <FormGroup>
                   <Input type="select" id="kategori" onChange={this.selectMounths}>
-                  <option value=''>Pilih Kategori</option>   
+                  <option value='0'>Pilih Kategori</option>   
                     {
                       this.state.kategori.map(kategori=>
-                        <option key = {kategori.VCIDREPO} value={kategori.VCIDREPO}>{kategori.VCDESCRIPTION+' - '+kategori.VCJENISREPO}</option>   
+                        <option key = {kategori.ID_REPO} value={kategori.ID_REPO}>{kategori.REPOSITORY+' - '+kategori.JENIS_REPO}</option>   
                       )
                     }
                   </Input>

@@ -3,7 +3,7 @@ import { BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import Pageadmin from 'layouts/page-admin';
 import Formfile from './form-file';
 import Listfiledetail from './list_file_detail';
-import { Button , Row , Col } from 'reactstrap';
+import { Button , Row , Col , Card , CardHeader  } from 'reactstrap';
 import app from 'app';
 
 class listFile extends React.Component{
@@ -28,7 +28,7 @@ class listFile extends React.Component{
     
       componentDidMount(){
 
-        app.apiGet('repository')
+        app.apiGet1('uploadfile/repo',app.dataUser[0].IDLOGIN)
            .then(res =>{
               this.setState({
                 repo: res
@@ -60,6 +60,8 @@ class listFile extends React.Component{
             this.setState({
               modal: true
             })  
+            
+            this.mode();
        }
 
       action = (cell, row, enumObject, rowIndex)=>{
@@ -72,7 +74,8 @@ class listFile extends React.Component{
       }
     
       render() {
-     
+
+
         const options = {
           sizePerPage: 10,
           hideSizePerPage: true,
@@ -85,16 +88,24 @@ class listFile extends React.Component{
           <Formfile /><br/>
           <Row>
               <Col sm="3">
+              <Card body>
+              <CardHeader className="text-center" >List Repository</CardHeader>  
+              <br />
               {
                 this.state.repo.map(repo =>
                   <div key={repo.VCIDREPO}>
-                    <br/><Button outline color="primary"  onClick={()=> this.Showlist(repo.VCIDREPO)} style={{width: '100%'}}>
+                  {/*<Card outline color="primary"  style={{ cursor: 'pointer' , marginBottom: '10px' , height: '50px' }}>
+                    <CardText className="text-center" onClick={()=> this.Showlist(repo.VCIDREPO)} >
                       {repo.VCDESCRIPTION}
+                    </CardText>
+                  </Card>*/}
+                    <Button outline color="dark" onClick={()=> this.Showlist(repo.ID_REPO)} style={{ width: '100%' , marginBottom: '10px' , height: '50px' , fontSize:'12px'}}>
+                      {repo.REPOSITORY}
                     </Button>
                   </div>
                 )
               }
-         
+              </Card>
               </Col>
             
               <Col sm="9">
@@ -130,7 +141,6 @@ class listFile extends React.Component{
                             dataSort>
                             Action
                           </TableHeaderColumn>
-                    
                       </BootstrapTable>
               </Col>
             </Row>
