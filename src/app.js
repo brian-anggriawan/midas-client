@@ -2,7 +2,17 @@ import sw from 'sweetalert2';
 import Decode from 'jwt-decode';
 const redux  =  require('redux');
 
+/* Variable Global */
+    let optionTable = {
+            sizePerPage: 10,
+            hideSizePerPage: true,
+            prePage: 'Back',
+            nextPage: 'Next',
+        };
 
+
+
+/* Variable Global */
 let encode = (file)=>{
 
 var reader = new FileReader();
@@ -103,6 +113,19 @@ return reader.readAsDataURL(file)
             return data;
         })
     }
+
+    let apiDelete = (url , data) =>{
+        return fetch(proxy + url ,{
+            method: 'delete',
+            headers: { 'Content-Type':'application/json'},
+            body: JSON.stringify(data)
+        })
+        .then(res => res.json())
+        .then(data =>{
+            return data
+        })
+    }
+
 /* API */
 
 /* SWET ALERT */
@@ -167,6 +190,7 @@ let store = createStore(rootReducer);
                         localStorage.removeItem('user');
                         localStorage.setItem('token',res.token)
                         localStorage.setItem('user', JSON.stringify(res.data))
+
                         msgok('Berhasil Login','/')
                     }else{
                         msgerror('Username Dan Password Salah')
@@ -224,4 +248,6 @@ export default { encode ,
                  head1,
                  store,
                  dataUser,
+                 optionTable,
+                 apiDelete,
                  head2}

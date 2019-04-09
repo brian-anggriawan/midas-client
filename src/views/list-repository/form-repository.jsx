@@ -17,7 +17,7 @@ class formRepository extends React.Component{
 
 
    componentDidMount(){
-      app.apiGet('repository/sbu/sbu')
+      app.apiGet('sbu')
          .then(res =>{
             this.setState({
                sbu: res
@@ -30,7 +30,7 @@ class formRepository extends React.Component{
 
    Divisi =(e)=>{
       let id = e.target.value;
-      app.apiGet1('repository/dpt', id)
+      app.apiGet1('dpt', id)
          .then(res =>{
            this.setState({
               dpt: res

@@ -2,7 +2,6 @@ import React from "react";
 import { BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import FormRepository from './form-repository';
 import Pageadmin from 'layouts/page-admin';
-import { Input } from 'reactstrap';
 import app from 'app';
 
 class listRepository extends React.Component {

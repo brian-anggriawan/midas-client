@@ -1,5 +1,6 @@
 import listRepository from "views/list-repository/list-repository.jsx";
 import listFile from "views/list-file/list-file";
+import listAccRepo from "views/list-access-repo/list-access-repo";
 import Auth from 'withAuth';
 
 
@@ -22,10 +23,10 @@ let routes;
         layout: "/admin"
       },
       {
-        path: "/listrepository",
+        path: "/listaccrepo",
         name: "Accsess Repository",
         icon: "ni ni-folder-17 text-orange",
-        component: Auth(listRepository),
+        component: Auth(listAccRepo),
         layout: "/admin"
       }
     
