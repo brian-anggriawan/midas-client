@@ -60,7 +60,7 @@ class formRepository extends React.Component{
     render(){
         return(
            <div>
-               <Baseformmodal title={'FORM KATEGORI'} captionbtn={'Tambah Kategori'} action={this.Save}>
+               <Baseformmodal title={'FORM KATEGORI'} action={this.Save} modal={this.props.modal} mode={this.props.mode}>
                <Form id="form">
                   <FormGroup>
                      <Label>Nama Master Report</Label>

@@ -5,27 +5,14 @@ import {
 } from 'reactstrap';
 
 class formModal extends React.Component{
-    constructor(props){
-        super(props)
-        this.state = {
-            modal: false
-        }
-    }
 
-    mode = () =>{
-        this.setState({
-            modal: !this.state.modal
-        })
-    }
-
+ 
     render(){
         return (
             <React.Fragment>
-            <Button color="primary" onClick={this.mode}> {this.props.captionbtn} </Button>    
             <Modal
                 className = 'modal-dialog-centered'
-                isOpen = {this.state.modal}
-                //toggle = {this.modal}
+                isOpen = {this.props.modal}
             >
                 <div className='modal-header'>
                     <h5 className='modal-title' id='exampleModalLabel'>
@@ -36,7 +23,7 @@ class formModal extends React.Component{
                         className='close'
                         data-dismiss ='modal'
                         type ='button'
-                        onClick={this.mode}
+                        onClick={this.props.mode}
                     >
                         <span aria-hidden = {true}> x </span>
                     </Button>
@@ -46,7 +33,7 @@ class formModal extends React.Component{
                 </div>
                 <div className='modal-footer'>
                     <Button color='primary' type='button' onClick={this.props.action}>Simpan</Button>
-                    <Button color='secondary' data-dismiss='modal' type='button' onClick={this.mode}>Close</Button>
+                    <Button color='secondary' data-dismiss='modal' type='button' onClick={this.props.mode}>Close</Button>
                 </div>
             </Modal>
             </React.Fragment>

@@ -102,7 +102,7 @@ class formUpload extends React.Component{
     render(){
         return(
            <div>
-              <Baseformmodal title={'FORM UPLOAD'} captionbtn={'Upload File'} action={this.Save}>
+              <Baseformmodal title={'FORM UPLOAD'} captionbtn={'Upload File'} action={this.Save} modal={this.props.modal} mode={this.props.mode}>
               <FormGroup>
                 <InputGroup className="input-group-alternative">
                   <InputGroupAddon addonType="prepend">

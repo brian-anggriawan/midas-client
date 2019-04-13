@@ -14,7 +14,8 @@ class listRepository extends React.Component {
       repo: [],
       user:[],
       reponame:'',
-      modal: false
+      modal: false,
+      modal2: false
     }
   }
 
@@ -22,6 +23,12 @@ class listRepository extends React.Component {
     this.setState({
       modal: !this.state.modal
     })
+  }
+
+  mode2 = ()=>{
+    this.setState({
+      modal2: !this.state.modal2
+    }) 
   }
 
   componentDidMount(){
@@ -57,15 +64,10 @@ class listRepository extends React.Component {
 
   render() {
  
-    const options = {
-      sizePerPage: 10,
-      hideSizePerPage: true,
-      prePage: 'Back',
-      nextPage: 'Next',
-    };
     return (
       <Pageadmin head={'List Master Report'}>
-        <FormRepository/><br/>
+        <Button type='button' color='default' onClick={this.mode2} style={{marginBottom:'10px'}}>Tambah Data</Button>
+        <FormRepository modal={this.state.modal2} mode={this.mode2}/>
         <Listuser modal={this.state.modal} mode={this.mode} data={this.state.user} title={this.state.reponame}/>
         <div className="row">
           <div className="col-md-12">
@@ -77,7 +79,7 @@ class listRepository extends React.Component {
                         striped
                         search
                         pagination={true}
-                        options={options}>
+                        options={app.optionTable}>
                           <TableHeaderColumn
                             dataField='REPOSITORY'
                             width='20%'
