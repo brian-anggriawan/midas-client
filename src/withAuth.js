@@ -11,6 +11,8 @@ export default function withAuth(View) {
             }
         }
 
+        
+
         componentWillMount() {
             if (!app.loggedin()) {
                 this.props.history.replace('/login')

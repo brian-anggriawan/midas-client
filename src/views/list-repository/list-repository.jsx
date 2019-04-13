@@ -3,26 +3,57 @@ import { BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import FormRepository from './form-repository';
 import Pageadmin from 'layouts/page-admin';
 import app from 'app';
+import {Button} from 'reactstrap';
+import Listuser from './list-user';
 
 class listRepository extends React.Component {
   constructor(){
     super()
 
     this.state = {
-      repo: []
+      repo: [],
+      user:[],
+      reponame:'',
+      modal: false
     }
   }
 
+  mode = ()=>{
+    this.setState({
+      modal: !this.state.modal
+    })
+  }
 
   componentDidMount(){
 
-    app.apiGet1('repository',app.dataUser[0].IDLOGIN)
+    app.apiGet('repository')
        .then(res => {
         this.setState({
           repo: res
         })
        });
   }
+
+  Showlist(rowIndex){
+    
+    let id = this.state.repo[rowIndex].ID_REPO;
+
+    app.apiGet1('repository/user',id)
+       .then(res =>{
+         this.setState({
+           user: res
+         })
+         this.setState({
+          reponame: this.state.repo[rowIndex].REPOSITORY
+        })
+       })
+    this.mode();    
+  }
+
+  button(cell, row, enumObject, rowIndex){
+    return <Button type="button" size="sm" color="default" onClick={()=> this.Showlist(rowIndex)}> List User </Button>
+  }
+
 
   render() {
  
@@ -35,6 +66,7 @@ class listRepository extends React.Component {
     return (
       <Pageadmin head={'List Master Report'}>
         <FormRepository/><br/>
+        <Listuser modal={this.state.modal} mode={this.mode} data={this.state.user} title={this.state.reponame}/>
         <div className="row">
           <div className="col-md-12">
               <div className="card">
@@ -43,6 +75,7 @@ class listRepository extends React.Component {
                         data={this.state.repo}
                         bordered={false}
                         striped
+                        search
                         pagination={true}
                         options={options}>
                           <TableHeaderColumn
@@ -51,6 +84,12 @@ class listRepository extends React.Component {
                             isKey = {true}
                             dataSort>
                             Description
+                          </TableHeaderColumn>
+                          <TableHeaderColumn
+                            dataField='NODOC'
+                            width='20%'
+                            dataSort>
+                            No Doc
                           </TableHeaderColumn>
                           <TableHeaderColumn
                             dataField='JENIS_REPO'
@@ -67,16 +106,26 @@ class listRepository extends React.Component {
                           <TableHeaderColumn
                             dataField='SBU'
                             width='20%'
-                            filter={ { type: 'TextFilter'} }
                             dataSort>
                             SBU
                           </TableHeaderColumn>
                           <TableHeaderColumn
                             dataField='DIVISION'
                             width='20%'
-                            filter={ { type: 'TextFilter'} }
                             dataSort>
                             Division
+                          </TableHeaderColumn>
+                          <TableHeaderColumn
+                            dataField='JUMLAH_USER'
+                            width='20%'
+                            dataSort>
+                            Jumlah User
+                          </TableHeaderColumn>
+                          <TableHeaderColumn
+                            dataFormat={this.button.bind(this)}
+                            width='20%'
+                            dataSort>
+                            Action
                           </TableHeaderColumn>
                       </BootstrapTable>
                 </div>

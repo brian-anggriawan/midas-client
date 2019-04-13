@@ -45,7 +45,7 @@ class formRepository extends React.Component{
 
    let data = Serilaze(form , { hash: true });
 
-       if (data.name && data.jenis  && data.ket ) {
+       if (data.name && data.jenis  && data.ket && data.sbu && data.divisi && data.nodoc ) {
          app.apiPostJson('repository',data)
          .then(res =>{
             if (res) {
@@ -65,6 +65,10 @@ class formRepository extends React.Component{
                   <FormGroup>
                      <Label>Nama Master Report</Label>
                      <Input placeholder="Master Report" type="text" name="name" required/>
+                  </FormGroup>
+                  <FormGroup>
+                     <Label>No Document</Label>
+                     <Input placeholder="No Document" type="text" name="nodoc" required/>
                   </FormGroup>
                   <FormGroup>
                      <Label>SBU</Label>

@@ -29,7 +29,7 @@ return reader.readAsDataURL(file)
 
     let proxy = 'http://192.168.40.88:4000/api/';
     let proxylogin = 'http://192.168.40.88:4000/login';
-    let browserStorage = JSON.parse(localStorage.getItem('user'));
+    let browserStorage = JSON.parse(localStorage.getItem('user')) || [{IDLOGIN:'00001'}];
     let dataUser = browserStorage; 
 
     let token = 'Bearer ' + localStorage.getItem('token');
@@ -117,7 +117,7 @@ return reader.readAsDataURL(file)
     let apiDelete = (url , data) =>{
         return fetch(proxy + url ,{
             method: 'delete',
-            headers: { 'Content-Type':'application/json'},
+            headers: head1,
             body: JSON.stringify(data)
         })
         .then(res => res.json())
@@ -187,11 +187,17 @@ let store = createStore(rootReducer);
         return apiLogin(data)
                 .then(res =>{
                     if (res.sucess) {
-                        localStorage.removeItem('user');
                         localStorage.setItem('token',res.token)
                         localStorage.setItem('user', JSON.stringify(res.data))
 
-                        msgok('Berhasil Login','/')
+                        let user = JSON.parse(localStorage.getItem('user')) || [{IDLOGIN:'00001'}];
+
+                        if (user[0].IDLOGIN === 'TEST003') {
+                            msgok('Berhasil Login','/admin/listrepository') 
+                        }else{
+                            msgok('Berhasil Login','/')
+                        }
+                        
                     }else{
                         msgerror('Username Dan Password Salah')
                     }
@@ -224,6 +230,7 @@ let store = createStore(rootReducer);
 
     let logout = ()=>{
         localStorage.removeItem('token');
+        localStorage.removeItem('user');
         msgok('Berhasil Logout','/login');
         
       

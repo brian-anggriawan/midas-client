@@ -1,5 +1,4 @@
 import React from "react";
-import {  } from "reactstrap";
 import {
   Button,
   Card,
@@ -29,6 +28,7 @@ class Auth extends React.Component {
 
   componentDidMount() {
     document.body.classList.add("bg-default");
+    
   }
   componentWillUnmount() {
     document.body.classList.remove("bg-default");
