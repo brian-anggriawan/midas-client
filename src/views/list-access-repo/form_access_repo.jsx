@@ -6,16 +6,15 @@ import {Button} from 'reactstrap';
 
 class formaccessrepo extends React.Component{
 
-    action(cell, row, enumObject, rowIndex){
-        return <Button color="primary" type="Button" onClick={()=> this.Save(cell ,row , rowIndex)} size="sm"> Pilih Repository</Button>
+    action=(idrepo)=>{
+        return <Button color="primary" type="Button" onClick={()=> this.Save(idrepo)} size="sm"> Pilih Repository</Button>
     }
 
-    Save(cell , row , rowIndex){
-        let id = this.props.repo[rowIndex].ID_REPO;
+    Save(idrepo){
         let user = this.props.user
 
         app.apiPostJson('accessrepo',{
-            idrepo: id,
+            idrepo: idrepo,
             iduser: user
         })
         .then(res =>{
@@ -56,7 +55,8 @@ class formaccessrepo extends React.Component{
                         Jenis Repo
                     </TableHeaderColumn>
                     <TableHeaderColumn
-                        dataFormat={this.action.bind(this)}
+                        dataField='ID_REPO'
+                        dataFormat={this.action}
                         width='16%'
                         dataSort>
                         Action

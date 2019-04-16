@@ -3,7 +3,7 @@ import { BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import Pageadmin from 'layouts/page-admin';
 import Formfile from './form-file';
 import Listfiledetail from './list_file_detail';
-import { Button , Row , Col , Card , CardText , Input } from 'reactstrap';
+import { Button , Row , Col , Card , CardText , Input , Badge } from 'reactstrap';
 import app from 'app';
 
 class listFile extends React.Component{
@@ -16,7 +16,9 @@ class listFile extends React.Component{
           filedetail:[],
           modal: false,
           modal2: false,
-          accperiod: []
+          accperiod: [],
+          dataform: [],
+          idperiod: app.dataUser[0].ID_PERIOD
         }
       }
 
@@ -43,23 +45,18 @@ class listFile extends React.Component{
              })
            })
 
-        app.apiGet1('uploadfile/repo',app.dataUser[0].IDLOGIN)
+        app.apiGet2('uploadfile/repo',app.dataUser[0].IDLOGIN ,app.dataUser[0].ID_PERIOD)
            .then(res =>{
-              this.setState({
-                repo: res
-              })
-           }) 
-        
-        app.apiGet('periodtoday')
-           .then(res =>{
-            let id = res[0].idperiod;
-            document.getElementById('period').value = id;
-           })
+                this.setState({
+                  repo: res
+            })
+        }) 
+         
       }
 
-      Showlist = (kategori) =>{
+      Showlist = (repo) =>{
 
-        app.apiGet1('uploadfile',kategori)
+        app.apiGet2('uploadfile',repo , this.state.idperiod)
            .then(res =>{
             this.setState({
               groupfile: res
@@ -67,11 +64,9 @@ class listFile extends React.Component{
            })
       }
 
-      onClickProductSelected(cell, row, rowIndex){
-        let id = this.state.groupfile[rowIndex].VCIDREPO,
-            tanggal = this.state.groupfile[rowIndex].DTPERIOD;
+      onClickProductSelected(index){
 
-            app.apiGet2('uploadfiledetail' , id , tanggal)
+            app.apiGet2('uploadfiledetail' , index , this.state.idperiod)
                .then(res =>{
                 this.setState({
                   filedetail: res
@@ -85,14 +80,58 @@ class listFile extends React.Component{
             this.mode();
        }
 
-      action = (cell, row, enumObject, rowIndex)=>{
+       onClickForm(rowindex){
+         let groupfile = this.state.groupfile.filter(res => res.ID_TEMPLATE === rowindex)[0];
+         let idselect  = document.getElementById('period');
+         let txselect= idselect.options[idselect.selectedIndex].text;
+
+         let data = [{
+           idperiod: this.state.idperiod,
+           idtemplate: groupfile.ID_TEMPLATE,
+           directory: groupfile.DIRECTORY,
+           period : txselect,
+           nodoc: groupfile.NODOC,
+           repo : groupfile.REPO
+         }]
+        this.setState({
+          dataform:data
+        })
+        this.mode2();
+       }
+
+      action = (index)=>{
         return(
           <>
-          <Button type="button" size="sm" color="success" onClick={this.mode2}>Upload</Button>
-          <Button type="button" size="sm" color="info" onClick={() => this.onClickProductSelected(cell, row, rowIndex)}>History File</Button>
+          <Button type="button" size="sm" color="success" onClick={()=> this.onClickForm(index)}>Upload</Button>
+          <Button type="button" size="sm" color="info" onClick={() => this.onClickProductSelected(index)}>History</Button>
           </>
           
         )
+      }
+      status = (count)=>{
+    
+        if (count > 0) {
+          return <Badge color="success">Sudah Upload</Badge>
+        }else{
+          return <Badge color="danger">Belum Upload</Badge>
+        }
+      }
+
+      selectPeriod =(e)=>{
+
+        this.setState({
+          idperiod: e.target.value
+        })
+
+        app.apiGet2('uploadfile/repo',app.dataUser[0].IDLOGIN ,e.target.value)
+           .then(res =>{
+                this.setState({
+                  repo: res
+            })
+              this.setState({
+                groupfile: []
+              })
+        }) 
       }
     
       render() {
@@ -100,8 +139,8 @@ class listFile extends React.Component{
         return (
           <Pageadmin head={'List File'}>
           <Listfiledetail modal= {this.state.modal} mode ={this.mode} data ={this.state.filedetail} />
-          <Formfile modal={this.state.modal2} mode={this.mode2} />
-          <Input type="select" id="period" style={{marginBottom: '10px' , width:'23%'}}>
+          <Formfile modal={this.state.modal2} mode={this.mode2} data={this.state.dataform} />
+          <Input type="select" id="period" style={{marginBottom: '10px' , width:'23%'}}  onChange={this.selectPeriod} value={this.state.idperiod}>
               {
                 this.state.accperiod.map(data =>
                  <option key={data.VCIDACCPERIOD} value ={data.VCIDACCPERIOD}>{data.VCDESCRIPTION}</option> 
@@ -114,6 +153,7 @@ class listFile extends React.Component{
                 this.state.repo.map(repo =>
                  <Card body key={repo.ID_REPO} style={{ marginBottom: '10px'}}>
                   <CardText style={{fontSize:'15px'}}>{repo.REPOSITORY}</CardText>
+                  <CardText className="text-center" style={{fontWeight: 'bold'}}>{repo.COUNT}</CardText>
                   <Button color="primary" size='sm' onClick={()=> this.Showlist(repo.ID_REPO)}>Show File</Button>
                  </Card> 
                 )
@@ -132,10 +172,23 @@ class listFile extends React.Component{
                             isKey = {true}
                             dataSort>
                             Periode
-                          </TableHeaderColumn>  
+                          </TableHeaderColumn>
                           <TableHeaderColumn
-                            dataField="button"
-                            dataFormat={this.action.bind(this)}
+                            dataField='COUNT'
+                            width='16%'
+                            dataSort>
+                            Jumlah File
+                          </TableHeaderColumn>
+                          <TableHeaderColumn
+                            dataField='COUNT'
+                            dataFormat={this.status}
+                            width='16%'
+                            dataSort>
+                            Status
+                          </TableHeaderColumn>      
+                          <TableHeaderColumn
+                            dataField='ID_TEMPLATE'
+                            dataFormat={this.action}
                             width='16%'
                             dataSort>
                             Action

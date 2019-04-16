@@ -41,24 +41,23 @@ class listRepository extends React.Component {
        });
   }
 
-  Showlist(rowIndex){
+  Showlist(id){
     
-    let id = this.state.repo[rowIndex].ID_REPO;
-
+    let data = this.state.repo.filter(res => res.ID_REPO === id)[0];
     app.apiGet1('repository/user',id)
        .then(res =>{
          this.setState({
            user: res
          })
          this.setState({
-          reponame: this.state.repo[rowIndex].REPOSITORY
+          reponame: data.REPOSITORY
         })
        })
     this.mode();    
   }
 
-  button(cell, row, enumObject, rowIndex){
-    return <Button type="button" size="sm" color="default" onClick={()=> this.Showlist(rowIndex)}> List User </Button>
+  button =(id)=>{
+    return <Button type="button" size="sm" color="default" onClick={()=> this.Showlist(id)}> List User </Button>
   }
 
 
@@ -124,7 +123,8 @@ class listRepository extends React.Component {
                             Jumlah User
                           </TableHeaderColumn>
                           <TableHeaderColumn
-                            dataFormat={this.button.bind(this)}
+                            dataField='ID_REPO'
+                            dataFormat={this.button}
                             width='20%'
                             dataSort>
                             Action

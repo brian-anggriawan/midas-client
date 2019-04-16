@@ -102,6 +102,18 @@ return reader.readAsDataURL(file)
         })
     }
 
+    let apiUpdate = (url , data) =>{
+        return fetch(proxy+url ,{
+            method: 'put',
+            headers: head1,
+            body: JSON.stringify(data)
+        })
+        .then(res => res.json())
+        .then(data =>{
+            return data;
+        })
+    }
+
     let apiLogin = (data)=>{
         return fetch(proxylogin,{
             method: 'post',
@@ -257,4 +269,5 @@ export default { encode ,
                  dataUser,
                  optionTable,
                  apiDelete,
+                 apiUpdate,
                  head2}

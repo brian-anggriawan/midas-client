@@ -80,9 +80,8 @@ mode = ()=>{
     })
 }
 
-delete(rowIndex){
-    let idrepo = this.state.data[rowIndex].IDACC_REPO;
-    
+delete(idrepo){
+
     app.apiDelete('accessrepo',{
         id: idrepo
     })
@@ -93,8 +92,8 @@ delete(rowIndex){
        })
 }
 
-action(cell, row, enumObject, rowIndex){
-    return <Button color="danger" onClick={()=> this.delete(rowIndex)} size="sm"> Delete Hak Akses </Button>
+action=(id)=>{
+    return <Button color="danger" onClick={()=> this.delete(id)} size="sm"> Delete Hak Akses </Button>
 }
 
 
@@ -166,7 +165,8 @@ render(){
                     Kategori
                 </TableHeaderColumn>   
                 <TableHeaderColumn
-                    dataFormat={this.action.bind(this)}
+                    dataField='IDACC_REPO'
+                    dataFormat={this.action}
                     width='16%'
                     dataSort>
                     Action

@@ -1,7 +1,7 @@
 import React from 'react';
 import Baselistmmodal from 'layouts/list_modal.jsx';
 import { BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
-import {Button} from 'reactstrap';
+import {Button , Badge} from 'reactstrap';
 import download from 'downloadjs';
 import app from 'app';
 
@@ -14,29 +14,39 @@ class listfiledetail extends React.Component{
         }
     }
 
-    action(cell, row, enumObject, rowIndex){
+    action =(id)=>{
+        console.log(id)
         return(
             <>
-                <Button type="button" size="sm" onClick={() => this.Downloadfile(cell, row, rowIndex)} outline color="success">Download</Button>
+                <Button type="button" size="sm" onClick={() => this.Downloadfile(id)} outline color="success">Download</Button>
             </>
         )
     }
 
-    async Downloadfile(cell, row, rowIndex){
-        let id = this.props.data[rowIndex].VCIDFILE;
-        let name = this.props.data[rowIndex].VCORIGINALNAME;
+    async Downloadfile(id){
+       let data = this.props.data.filter(res => res.ID_FILE === id)[0];
+       let idfile = data.ID_FILE;
+       let name = data.ORIGINAL_NAME;
 
-       let res = await fetch(app.proxy+'downloadfile/'+id ,{
+       let res = await fetch(app.proxy+'downloadfile/'+idfile ,{
            method: 'get',
            headers: app.head2
        });
+
+       
        let blob = await res.blob();
     
        download(blob , name);
-
+       
     }
 
-
+    cekversion =(id)=>{
+        if (id === 1) {
+            return <Badge color="success">File Terbaru</Badge> 
+        }else{
+            return <Badge color="danger">File Lama</Badge> 
+        }
+    }
 
     render(){
 
@@ -59,12 +69,6 @@ class listfiledetail extends React.Component{
                                 pagination={true}
                                 options={options}>
                                 <TableHeaderColumn
-                                    dataField='DTPERIOD'
-                                    width='16%'
-                                    dataSort>
-                                    Periode
-                                </TableHeaderColumn>
-                                <TableHeaderColumn
                                     dataField='DTUPLOAD'
                                     width='16%'
                                     isKey = {true}
@@ -72,16 +76,16 @@ class listfiledetail extends React.Component{
                                     Tanggal Upload
                                 </TableHeaderColumn>
                                 <TableHeaderColumn
-                                    dataField='REPO'
+                                    dataField='FILE_DESCRIPTION'
                                     width='16%'
                                     dataSort>
-                                    Kategori
+                                    Description
                                 </TableHeaderColumn>
                                 <TableHeaderColumn
-                                    dataField='VCORIGINALNAME'
+                                    dataField='ORIGINAL_NAME'
                                     width='16%'
                                     dataSort>
-                                    File Name
+                                    Original File Name
                                 </TableHeaderColumn>
                                 <TableHeaderColumn
                                     dataField='USER'
@@ -90,7 +94,15 @@ class listfiledetail extends React.Component{
                                     User Upload
                                 </TableHeaderColumn>
                                 <TableHeaderColumn
-                                    dataFormat={this.action.bind(this)}
+                                    dataField='ACTIVE'
+                                    dataFormat={this.cekversion}
+                                    width='16%'
+                                    dataSort>
+                                    Status
+                                </TableHeaderColumn>
+                                <TableHeaderColumn
+                                    dataField='ID_FILE'
+                                    dataFormat={this.action}
                                     width='16'>
                                     Action
                                 </TableHeaderColumn>
