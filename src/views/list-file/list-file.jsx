@@ -174,6 +174,12 @@ class listFile extends React.Component{
                             Periode
                           </TableHeaderColumn>
                           <TableHeaderColumn
+                            dataField='LAST_UPLOAD'
+                            width='16%'
+                            dataSort>
+                            Last Upload
+                          </TableHeaderColumn>
+                          <TableHeaderColumn
                             dataField='COUNT'
                             width='16%'
                             dataSort>

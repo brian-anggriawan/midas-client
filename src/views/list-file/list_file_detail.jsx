@@ -3,6 +3,7 @@ import Baselistmmodal from 'layouts/list_modal.jsx';
 import { BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import {Button , Badge} from 'reactstrap';
 import download from 'downloadjs';
+import Loading from 'layouts/loading-modal';
 import app from 'app';
 
 
@@ -10,12 +11,11 @@ class listfiledetail extends React.Component{
     constructor(props){
         super(props)
         this.state = {
-            
+            modal: false
         }
     }
 
     action =(id)=>{
-        console.log(id)
         return(
             <>
                 <Button type="button" size="sm" onClick={() => this.Downloadfile(id)} outline color="success">Download</Button>
@@ -23,21 +23,32 @@ class listfiledetail extends React.Component{
         )
     }
 
+    mode =()=>{
+        this.setState({
+            modal: !this.state.modal
+        })
+    }
+
     async Downloadfile(id){
        let data = this.props.data.filter(res => res.ID_FILE === id)[0];
        let idfile = data.ID_FILE;
        let name = data.ORIGINAL_NAME;
+       
+       this.mode();
 
        let res = await fetch(app.proxy+'downloadfile/'+idfile ,{
            method: 'get',
            headers: app.head2
        });
 
-       
-       let blob = await res.blob();
+       if (res) {
+        let blob = await res.blob();
     
-       download(blob , name);
-       
+        download(blob , name);
+        this.mode();
+        app.apiGet1('deletefile',idfile)  
+
+       }
     }
 
     cekversion =(id)=>{
@@ -62,6 +73,7 @@ class listfiledetail extends React.Component{
                     <div className="col-md-12">
                         <div className="card">
                             <div className="content">
+                            <Loading modal={this.state.modal} text={'Proses Download'}/>
                             <BootstrapTable
                                 data={this.props.data}
                                 bordered={false}
