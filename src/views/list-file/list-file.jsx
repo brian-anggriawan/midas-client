@@ -6,6 +6,7 @@ import Listfiledetail from './list_file_detail';
 import { Button , Row , Col , Card , CardText , Input , Badge } from 'reactstrap';
 import app from 'app';
 
+
 class listFile extends React.Component{
     constructor(){
         super()
@@ -51,7 +52,7 @@ class listFile extends React.Component{
                   repo: res
             })
         }) 
-         
+
       }
 
       Showlist = (repo) =>{
@@ -151,7 +152,7 @@ class listFile extends React.Component{
               <Col sm="3"> 
               {
                 this.state.repo.map(repo =>
-                 <Card body key={repo.ID_REPO} style={{ marginBottom: '10px'}}>
+                 <Card id="cardfile" body key={repo.ID_REPO} style={{ marginBottom: '10px'}}>
                   <CardText style={{fontSize:'15px'}}>{repo.REPOSITORY}</CardText>
                   <CardText className="text-center" style={{fontWeight: 'bold'}}>{repo.COUNT}</CardText>
                   <Button color="primary" size='sm' onClick={()=> this.Showlist(repo.ID_REPO)}>Show File</Button>
@@ -159,7 +160,7 @@ class listFile extends React.Component{
                 )
               }
               </Col>
-              <Col sm="9">
+              <Col sm="9" className="table-responsive">
                       <BootstrapTable
                         data={this.state.groupfile}
                         bordered={false}

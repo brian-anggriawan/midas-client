@@ -72,7 +72,7 @@ class listfiledetail extends React.Component{
                 <div className="row">
                     <div className="col-md-12">
                         <div className="card">
-                            <div className="content">
+                            <div className="content table-responsive">
                             <Loading modal={this.state.modal} text={'Proses Download'}/>
                             <BootstrapTable
                                 data={this.props.data}

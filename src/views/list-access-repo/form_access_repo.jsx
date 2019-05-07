@@ -28,40 +28,42 @@ class formaccessrepo extends React.Component{
     render(){
         return(
             <Baselistmmodal modal={this.props.modal} mode={this.props.mode} title={'Tambah Access Repository'}>
-                <BootstrapTable
-                    bordered={false}
-                    striped
-                    data={this.props.repo}
-                    pagination={true}
-                    options= {app.optionTable}
-                    >
-                    <TableHeaderColumn
-                        dataField='REPOSITORY'
-                        width='16%'
-                        isKey = {true}
-                        dataSort>
-                        Repository
-                    </TableHeaderColumn>
-                    <TableHeaderColumn
-                        dataField='KETERANGAN'
-                        width='16%'
-                        dataSort>
-                        Keterangan
-                    </TableHeaderColumn>
-                    <TableHeaderColumn
-                        dataField='JENIS_REPO'
-                        width='16%'
-                        dataSort>
-                        Jenis Repo
-                    </TableHeaderColumn>
-                    <TableHeaderColumn
-                        dataField='ID_REPO'
-                        dataFormat={this.action}
-                        width='16%'
-                        dataSort>
-                        Action
-                    </TableHeaderColumn>
-                </BootstrapTable>
+                <div className="table-responsive">
+                    <BootstrapTable
+                        bordered={false}
+                        striped
+                        data={this.props.repo}
+                        pagination={true}
+                        options= {app.optionTable}
+                        >
+                        <TableHeaderColumn
+                            dataField='REPOSITORY'
+                            width='16%'
+                            isKey = {true}
+                            dataSort>
+                            Repository
+                        </TableHeaderColumn>
+                        <TableHeaderColumn
+                            dataField='KETERANGAN'
+                            width='16%'
+                            dataSort>
+                            Keterangan
+                        </TableHeaderColumn>
+                        <TableHeaderColumn
+                            dataField='JENIS_REPO'
+                            width='16%'
+                            dataSort>
+                            Jenis Repo
+                        </TableHeaderColumn>
+                        <TableHeaderColumn
+                            dataField='ID_REPO'
+                            dataFormat={this.action}
+                            width='16%'
+                            dataSort>
+                            Action
+                        </TableHeaderColumn>
+                    </BootstrapTable>
+                </div>
             </Baselistmmodal>
         )
     }

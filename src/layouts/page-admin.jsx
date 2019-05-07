@@ -25,12 +25,12 @@ class Pageadmin extends React.Component{
                     <Row>
                         <div className=" col">
                             <Card className=" bg-gradient-secondary">
-                                <CardHeader>
+                                <CardHeader style={{ marginBottom: '20px'}}> 
                                     <h3 className=" mb-0">{this.props.head}</h3>
-                                </CardHeader><br/>
-                                <div className="container-fluid">
+                                </CardHeader>
+                                <div className="container-fluid" style={{marginBottom: '20px'}}>
                                     {this.props.children}
-                                </div><br/>
+                                </div>
                             </Card>
                         </div>
                     </Row>

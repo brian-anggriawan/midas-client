@@ -68,72 +68,66 @@ class listRepository extends React.Component {
         <Button type='button' color='default' onClick={this.mode2} style={{marginBottom:'10px'}}>Tambah Data</Button>
         <FormRepository modal={this.state.modal2} mode={this.mode2}/>
         <Listuser modal={this.state.modal} mode={this.mode} data={this.state.user} title={this.state.reponame}/>
-        <div className="row">
-          <div className="col-md-12">
-              <div className="card">
-                <div className="content">
-                        <BootstrapTable
-                        data={this.state.repo}
-                        bordered={false}
-                        striped
-                        search
-                        pagination={true}
-                        options={app.optionTable}>
-                          <TableHeaderColumn
-                            dataField='REPOSITORY'
-                            width='20%'
-                            isKey = {true}
-                            dataSort>
-                            Description
-                          </TableHeaderColumn>
-                          <TableHeaderColumn
-                            dataField='NODOC'
-                            width='20%'
-                            dataSort>
-                            No Doc
-                          </TableHeaderColumn>
-                          <TableHeaderColumn
-                            dataField='JENIS_REPO'
-                            width='20%'
-                            dataSort>
-                            Jenis Laporan
-                          </TableHeaderColumn>
-                          <TableHeaderColumn
-                            dataField='KETERANGAN'
-                            width='20%'
-                            dataSort>
-                            Keterangan
-                          </TableHeaderColumn>
-                          <TableHeaderColumn
-                            dataField='SBU'
-                            width='20%'
-                            dataSort>
-                            SBU
-                          </TableHeaderColumn>
-                          <TableHeaderColumn
-                            dataField='DIVISION'
-                            width='20%'
-                            dataSort>
-                            Division
-                          </TableHeaderColumn>
-                          <TableHeaderColumn
-                            dataField='JUMLAH_USER'
-                            width='20%'
-                            dataSort>
-                            Jumlah User
-                          </TableHeaderColumn>
-                          <TableHeaderColumn
-                            dataField='ID_REPO'
-                            dataFormat={this.button}
-                            width='20%'
-                            dataSort>
-                            Action
-                          </TableHeaderColumn>
-                      </BootstrapTable>
-                </div>
-              </div>
-            </div>
-          </div>  
+        <div className="table-responsive" >
+          <BootstrapTable
+          data={this.state.repo}
+          bordered={false}
+          striped
+          search
+          pagination={true}
+          options={app.optionTable}>
+            <TableHeaderColumn
+              dataField='REPOSITORY'
+              width='8%'
+              isKey = {true}
+              dataSort>
+              Description
+            </TableHeaderColumn>
+            <TableHeaderColumn
+              dataField='NODOC'
+              width='8%'
+              dataSort>
+              No Doc
+            </TableHeaderColumn>
+            <TableHeaderColumn
+              dataField='JENIS_REPO'
+              width='8%'
+              dataSort>
+              Jenis Laporan
+            </TableHeaderColumn>
+            <TableHeaderColumn
+              dataField='KETERANGAN'
+              width='8%'
+              dataSort>
+              Keterangan
+            </TableHeaderColumn>
+            <TableHeaderColumn
+              dataField='SBU'
+              width='8%'
+              dataSort>
+              SBU
+            </TableHeaderColumn>
+            <TableHeaderColumn
+              dataField='DIVISION'
+              width='8%'
+              dataSort>
+              Division
+            </TableHeaderColumn>
+            <TableHeaderColumn
+              dataField='JUMLAH_USER'
+              width='8%'
+              dataSort>
+              Jumlah User
+            </TableHeaderColumn>
+            <TableHeaderColumn
+              dataField='ID_REPO'
+              dataFormat={this.button}
+              width='8%'
+              dataSort>
+              Action
+            </TableHeaderColumn>
+          </BootstrapTable>              
+        </div>   
       </Pageadmin>
     );
   }

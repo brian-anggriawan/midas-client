@@ -141,37 +141,38 @@ render(){
                 </Col>
                 <Button type="Button" onClick={this.data} color="default">Cari Data</Button>    
             </Row>
-            <Button type="button" color='default' onClick={this.mode}>Tambah Akses Repository</Button><br/><br/>
-            <br/>
+            <Button type="button" color='default' onClick={this.mode} style={{marginBottom:'20px'}}>Tambah Akses Repository</Button>
             <Formacc modal={this.state.modal} mode={this.mode} repo ={this.state.repo} user={this.state.iduser} test={this.data} />
-            <BootstrapTable
-                bordered={false}
-                striped
-                data={this.state.data}
-                pagination={true}
-                options= {app.optionTable}
-                >
-                <TableHeaderColumn
-                    dataField='REPOSITORY'
-                    width='16%'
-                    isKey = {true}
-                    dataSort>
-                    Periode
-                </TableHeaderColumn>
-                <TableHeaderColumn
-                    dataField='JENIS_REPO'
-                    width='16%'
-                    dataSort>
-                    Kategori
-                </TableHeaderColumn>   
-                <TableHeaderColumn
-                    dataField='IDACC_REPO'
-                    dataFormat={this.action}
-                    width='16%'
-                    dataSort>
-                    Action
-                </TableHeaderColumn>   
-            </BootstrapTable>
+            <div className="table-responsive"> 
+                <BootstrapTable
+                    bordered={false}
+                    striped
+                    data={this.state.data}
+                    pagination={true}
+                    options= {app.optionTable}
+                    >
+                    <TableHeaderColumn
+                        dataField='REPOSITORY'
+                        width='16%'
+                        isKey = {true}
+                        dataSort>
+                        Periode
+                    </TableHeaderColumn>
+                    <TableHeaderColumn
+                        dataField='JENIS_REPO'
+                        width='16%'
+                        dataSort>
+                        Kategori
+                    </TableHeaderColumn>   
+                    <TableHeaderColumn
+                        dataField='IDACC_REPO'
+                        dataFormat={this.action}
+                        width='16%'
+                        dataSort>
+                        Action
+                    </TableHeaderColumn>   
+                </BootstrapTable>
+            </div>
         </Pageadmin>
     )
 }
