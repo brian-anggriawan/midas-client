@@ -5,6 +5,7 @@ import Pageadmin from 'layouts/page-admin';
 import app from 'app';
 import {Button} from 'reactstrap';
 import Listuser from './list-user';
+import Scroll from 'simplebar-react';
 
 class listRepository extends React.Component {
   constructor(){
@@ -31,7 +32,7 @@ class listRepository extends React.Component {
     }) 
   }
 
-  componentDidMount(){
+  componentWillMount(){
 
     app.apiGet('repository')
        .then(res => {
@@ -68,7 +69,7 @@ class listRepository extends React.Component {
         <Button type='button' color='default' onClick={this.mode2} style={{marginBottom:'10px'}}>Tambah Data</Button>
         <FormRepository modal={this.state.modal2} mode={this.mode2}/>
         <Listuser modal={this.state.modal} mode={this.mode} data={this.state.user} title={this.state.reponame}/>
-        <div className="table-responsive" >
+        <Scroll>
           <BootstrapTable
           data={this.state.repo}
           bordered={false}
@@ -127,7 +128,7 @@ class listRepository extends React.Component {
               Action
             </TableHeaderColumn>
           </BootstrapTable>              
-        </div>   
+        </Scroll>   
       </Pageadmin>
     );
   }

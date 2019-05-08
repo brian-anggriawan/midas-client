@@ -4,6 +4,7 @@ import { BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import {Button , Badge} from 'reactstrap';
 import download from 'downloadjs';
 import Loading from 'layouts/loading-modal';
+import Scroll from 'simplebar-react';
 import app from 'app';
 
 
@@ -74,51 +75,53 @@ class listfiledetail extends React.Component{
                         <div className="card">
                             <div className="content table-responsive">
                             <Loading modal={this.state.modal} text={'Proses Download'}/>
-                            <BootstrapTable
-                                data={this.props.data}
-                                bordered={false}
-                                striped
-                                pagination={true}
-                                options={options}>
-                                <TableHeaderColumn
-                                    dataField='DTUPLOAD'
-                                    width='16%'
-                                    isKey = {true}
-                                    dataSort>
-                                    Tanggal Upload
-                                </TableHeaderColumn>
-                                <TableHeaderColumn
-                                    dataField='FILE_DESCRIPTION'
-                                    width='16%'
-                                    dataSort>
-                                    Description
-                                </TableHeaderColumn>
-                                <TableHeaderColumn
-                                    dataField='ORIGINAL_NAME'
-                                    width='16%'
-                                    dataSort>
-                                    Original File Name
-                                </TableHeaderColumn>
-                                <TableHeaderColumn
-                                    dataField='USER'
-                                    width='16%'
-                                    dataSort>
-                                    User Upload
-                                </TableHeaderColumn>
-                                <TableHeaderColumn
-                                    dataField='ACTIVE'
-                                    dataFormat={this.cekversion}
-                                    width='16%'
-                                    dataSort>
-                                    Status
-                                </TableHeaderColumn>
-                                <TableHeaderColumn
-                                    dataField='ID_FILE'
-                                    dataFormat={this.action}
-                                    width='16'>
-                                    Action
-                                </TableHeaderColumn>
-                            </BootstrapTable>
+                            <Scroll>
+                                <BootstrapTable
+                                    data={this.props.data}
+                                    bordered={false}
+                                    striped
+                                    pagination={true}
+                                    options={options}>
+                                    <TableHeaderColumn
+                                        dataField='DTUPLOAD'
+                                        width='16%'
+                                        isKey = {true}
+                                        dataSort>
+                                        Tanggal Upload
+                                    </TableHeaderColumn>
+                                    <TableHeaderColumn
+                                        dataField='FILE_DESCRIPTION'
+                                        width='16%'
+                                        dataSort>
+                                        Description
+                                    </TableHeaderColumn>
+                                    <TableHeaderColumn
+                                        dataField='ORIGINAL_NAME'
+                                        width='16%'
+                                        dataSort>
+                                        Original File Name
+                                    </TableHeaderColumn>
+                                    <TableHeaderColumn
+                                        dataField='USER'
+                                        width='16%'
+                                        dataSort>
+                                        User Upload
+                                    </TableHeaderColumn>
+                                    <TableHeaderColumn
+                                        dataField='ACTIVE'
+                                        dataFormat={this.cekversion}
+                                        width='16%'
+                                        dataSort>
+                                        Status
+                                    </TableHeaderColumn>
+                                    <TableHeaderColumn
+                                        dataField='ID_FILE'
+                                        dataFormat={this.action}
+                                        width='16'>
+                                        Action
+                                    </TableHeaderColumn>
+                                </BootstrapTable>
+                            </Scroll>
                             </div>
                         </div>
                     </div>

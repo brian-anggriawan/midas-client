@@ -3,6 +3,7 @@ import { BootstrapTable , TableHeaderColumn } from 'react-bootstrap-table';
 import Pageadmin from 'layouts/page-admin';
 import { Input ,Row , Col , FormGroup , Button } from 'reactstrap';
 import Formacc from './form_access_repo';
+import Scroll from 'simplebar-react';
 import app from 'app';
 
 
@@ -143,7 +144,7 @@ render(){
             </Row>
             <Button type="button" color='default' onClick={this.mode} style={{marginBottom:'20px'}}>Tambah Akses Repository</Button>
             <Formacc modal={this.state.modal} mode={this.mode} repo ={this.state.repo} user={this.state.iduser} test={this.data} />
-            <div className="table-responsive"> 
+            <Scroll>
                 <BootstrapTable
                     bordered={false}
                     striped
@@ -172,7 +173,7 @@ render(){
                         Action
                     </TableHeaderColumn>   
                 </BootstrapTable>
-            </div>
+            </Scroll>
         </Pageadmin>
     )
 }

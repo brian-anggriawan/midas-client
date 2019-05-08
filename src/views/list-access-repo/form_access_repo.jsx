@@ -3,6 +3,7 @@ import Baselistmmodal from 'layouts/list_modal.jsx';
 import app from 'app';
 import {BootstrapTable , TableHeaderColumn} from 'react-bootstrap-table';
 import {Button} from 'reactstrap';
+import Scroll from 'simplebar-react';
 
 class formaccessrepo extends React.Component{
 
@@ -28,7 +29,7 @@ class formaccessrepo extends React.Component{
     render(){
         return(
             <Baselistmmodal modal={this.props.modal} mode={this.props.mode} title={'Tambah Access Repository'}>
-                <div className="table-responsive">
+                <Scroll>
                     <BootstrapTable
                         bordered={false}
                         striped
@@ -63,7 +64,7 @@ class formaccessrepo extends React.Component{
                             Action
                         </TableHeaderColumn>
                     </BootstrapTable>
-                </div>
+                </Scroll>
             </Baselistmmodal>
         )
     }

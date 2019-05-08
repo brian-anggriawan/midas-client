@@ -201,15 +201,7 @@ let store = createStore(rootReducer);
                     if (res.sucess) {
                         localStorage.setItem('token',res.token)
                         localStorage.setItem('user', JSON.stringify(res.data))
-
-                        let user = JSON.parse(localStorage.getItem('user')) || [{IDLOGIN:'00001'}];
-
-                        if (user[0].IDLOGIN === 'TEST003') {
-                            msgok('Berhasil Login','/admin/listrepository') 
-                        }else{
-                            msgok('Berhasil Login','/')
-                        }
-                        
+                        msgok('Berhasil Login','/') 
                     }else{
                         msgerror('Username Dan Password Salah')
                     }

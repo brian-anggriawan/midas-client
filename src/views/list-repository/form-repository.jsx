@@ -96,11 +96,12 @@ class formRepository extends React.Component{
                   <FormGroup>
                      <Label>Jenis Report</Label>
                      <Input type="select" id="jenis" name="jenis" required>
-                     <option value="">Pilih Jenis Report</option>
-                     <option value="Harian">Harian</option>
-                     <option value="Mingguan">Mingguan</option>
-                     <option value="Bulanan">Bulanan</option>
-                     <option value="Tahunan">Tahunan</option>
+                        <option value="">Pilih Jenis Report</option>
+                        <option value="Harian">Harian</option>
+                        <option value="Mingguan">Mingguan</option>
+                        <option value="Bulanan">Bulanan</option>
+                        <option value="Tahunan">Tahunan</option>
+                        <option value="Insidentil">Insidentil</option>
                      </Input>
                   </FormGroup>
                   <FormGroup>

@@ -66,12 +66,15 @@
     "react-drop-zone": "^3.0.6",
     "react-filepond": "^7.0.1",
     "react-google-maps": "9.4.5",
+    "react-particles-js": "^2.6.0",
     "react-router-dom": "4.3.1",
     "react-scripts": "2.1.8",
     "react-spinner-material": "^1.1.1",
     "react-validation": "^3.0.7",
     "reactstrap": "7.1.0",
     "redux": "^4.0.1",
+    "simplebar": "^4.0.0-alpha.9",
+    "simplebar-react": "^1.0.0-alpha.9",
     "sweetalert2": "^8.7.0"
   },
   "devDependencies": {
