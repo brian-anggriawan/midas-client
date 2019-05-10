@@ -170,7 +170,6 @@ class listFile extends React.Component{
       }
     
       render() {
-
         return (
           <Pageadmin head={'List File'}>
           <Loading modal={this.state.loading} text={'Proses Download'}/>
@@ -188,7 +187,7 @@ class listFile extends React.Component{
                 <Scroll style={{ height: '700px' }}>
                 {
                   this.state.repo.map(repo =>
-                  <Card id="cardfile" body key={repo.ID_REPO} style={{ marginBottom: '10px' , border: '5px solid lightblue'}}>
+                  <Card id="cardfile" body key={repo.ID_REPO} style={{ marginBottom: '10px' , border: '5px solid lightblue'}}> 
                     <CardText style={{fontSize:'15px'}}>{repo.REPOSITORY}</CardText>
                     <CardText style={{fontSize:'15px'}}>{repo.JENIS_REPO}</CardText>
                     <CardText className="text-center" style={{fontWeight: 'bold'}}>{repo.COUNT}</CardText>

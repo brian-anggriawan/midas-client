@@ -76,6 +76,39 @@ return reader.readAsDataURL(file)
         })
     }
 
+    let apiGet3 = (url , params1 , params2 , params3)=>{
+        return fetch(proxy+url+'/'+params1+'/'+params2+'/'+params3 , {
+            method: 'get',
+            headers: head1
+        })
+        .then(res => res.json())
+        .then(data =>{
+            return data
+        })
+    }
+
+    let apiGet4 = (url , params1 , params2 , params3 , params4)=>{
+        return fetch(proxy+url+'/'+params1+'/'+params2+'/'+params3+'/'+params4 , {
+            method: 'get',
+            headers: head1
+        })
+        .then(res => res.json())
+        .then(data =>{
+            return data
+        })
+    }
+
+    let apiGet5 = (url , params1 , params2 , params3 , params4 , params5)=>{
+        return fetch(proxy+url+'/'+params1+'/'+params2+'/'+params3+'/'+params4+'/'+params5 , {
+            method: 'get',
+            headers: head1
+        })
+        .then(res => res.json())
+        .then(data =>{
+            return data
+        })
+    }
+
 
     let apiPostFormdata = (url , data)=>{
         return fetch(proxy+url,{
@@ -249,6 +282,9 @@ export default { encode ,
                  apiGet , 
                  apiGet1 , 
                  apiGet2 ,
+                 apiGet3 ,
+                 apiGet4 ,
+                 apiGet5 ,
                  apiPostJson ,
                  apiPostFormdata , 
                  msgerror , 

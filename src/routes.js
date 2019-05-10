@@ -2,6 +2,7 @@ import listRepository from "views/list-repository/list-repository.jsx";
 import listFile from "views/list-file/list-file";
 import listAccRepo from "views/list-access-repo/list-access-repo";
 import formatFile from 'views/format-file/list-format-file';
+import LaporanAnalis from 'views/laporan-analisa/list-laporan-analisa';
 import Index from 'views/index';
 import Auth from 'withAuth';
 
@@ -35,7 +36,14 @@ import Auth from 'withAuth';
         icon: "ni ni-folder-17 text-orange",
         component: Auth(listAccRepo),
         layout: "/admin"
-      } 
+      },
+      {
+        path: "/laporan-analisa",
+        name: "Laporan Analisa",
+        icon: "ni ni-single-copy-04 text-green",
+        component: Auth(LaporanAnalis),
+        layout: "/admin"
+      }
     ]
    }
    else if( user === 1){
@@ -51,7 +59,7 @@ import Auth from 'withAuth';
         path: "/laporan-analisa",
         name: "Laporan Analisa",
         icon: "ni ni-single-copy-04 text-green",
-        component: Auth(listFile),
+        component: Auth(LaporanAnalis),
         layout: "/admin"
       }
      
@@ -78,7 +86,7 @@ import Auth from 'withAuth';
         path: "/laporan-analisa",
         name: "Laporan Analisa",
         icon: "ni ni-single-copy-04 text-green",
-        component: Auth(listFile),
+        component: Auth(LaporanAnalis),
         layout: "/admin"
       }
     ]
