@@ -2,8 +2,10 @@ import React from 'react';
 import Pageadmin from 'layouts/page-admin';
 import { BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import Scroll from 'simplebar-react';
-import { Row , Col , CardTitle , Button , Input , Progress} from 'reactstrap';
+import { Row , Col , CardTitle , Button , Card , Input , Progress , CardBody} from 'reactstrap';
+import Detail from './list_laporan_detail';
 import app from 'app';
+import './analisa.css';
 
 
 class ListLaporanAnalisa extends React.Component{
@@ -17,7 +19,10 @@ class ListLaporanAnalisa extends React.Component{
             data:[],
             sbu:[],
             dpt:[],
-            iddpt:''
+            iddpt:'',
+            flagmodal:'',
+            detail:[],
+            modal: false
         }
     }
 
@@ -94,10 +99,10 @@ class ListLaporanAnalisa extends React.Component{
             <div id='persen' className=''>
                 <div className="progress-info">
                     <div className="progress-percentage">
-                    <span>{persen}%</span>
+                    <span>{persen || 0}%</span>
                     </div>
                 </div>
-                <Progress max="100" value={persen} color="success" />
+                <Progress max="100" value={persen || 0} color="success" />
             </div>
         )
     }
@@ -117,7 +122,38 @@ class ListLaporanAnalisa extends React.Component{
                    })
                })
     }
-    
+
+    mode = () =>{
+        this.setState({
+            modal: !this.state.modal
+        })
+    }
+
+    Showdetail = (flag ,idrepo)=>{
+      
+        app.apiGet3('laporananalis',flag,idrepo,this.state.idperiod)
+            .then(res =>{
+                this.setState({
+                    detail: res,
+                    flagmodal:flag
+                })
+            })
+        
+        this.mode()
+       
+    }
+ 
+    sudahupload=(nilai)=>{
+        let data =  this.state.data.filter(data => data.ID_REPO === nilai)[0]
+        return <Button type='button' size='sm' onClick={()=> this.Showdetail(1 , nilai)} color='success' style={{width: '70px'}}>{data.SUDAH_UPLOAD}</Button>
+    }
+
+    belumupload=(nilai)=>{
+        let data =  this.state.data.filter(data => data.ID_REPO === nilai)[0]
+        return <Button type='button' size='sm' onClick={()=> this.Showdetail(2 , nilai)} color='danger' style={{width: '70px'}}>{data.BELUM_UPLOAD || 0}</Button>
+    }
+
+
     render(){
         let periode = [
             {
@@ -144,6 +180,7 @@ class ListLaporanAnalisa extends React.Component{
 
         return(
             <Pageadmin head={'Laporan Analisa'}>
+                <Detail modal ={this.state.modal} mode={this.mode} data={this.state.detail} flag={this.state.flagmodal} />
                 <Row style={{marginBottom:'20px'}}>
                     {
                         this.state.flag !== 2 ?
@@ -192,9 +229,11 @@ class ListLaporanAnalisa extends React.Component{
                 </Row>
                 <Row >
                     <Col sm='2'>
+                   
                     {
                         periode.map( data =>
-                            <Button  key={data.name} className='mb-3' onClick={()=> this.selectCard(data.prefix)}  color="default" outline type='button' style={{ width: '100%'}}>
+                            <Card id='card' key={data.name} className='mb-3' onClick={()=> this.selectCard(data.prefix)} style={{ width: '100%' , border:'3px solid lightblue' , cursor:'pointer'}}>
+                                <CardBody>
                                 <Row>
                                     <div className="col">
                                         <CardTitle className="font-weight-bold" style={{marginTop:'10px'}}>
@@ -207,9 +246,12 @@ class ListLaporanAnalisa extends React.Component{
                                         </div>
                                     </div>
                                 </Row>
-                            </Button> 
+                                </CardBody>
+                                
+                            </Card> 
                         )
                     }
+                    
                     </Col>
                     <Col sm='10'>
                         <Scroll>
@@ -233,13 +275,15 @@ class ListLaporanAnalisa extends React.Component{
                                     Last Upload
                                 </TableHeaderColumn>
                                 <TableHeaderColumn
-                                    dataField='SUDAH_UPLOAD'
+                                    dataField='ID_REPO'
+                                    dataFormat={this.sudahupload}
                                     width='16%'
                                     dataSort>
                                     Sudah Upload
                                 </TableHeaderColumn>
                                 <TableHeaderColumn
-                                    dataField='BELUM_UPLOAD'
+                                    dataField='ID_REPO'
+                                    dataFormat={this.belumupload}
                                     width='16%'
                                     dataSort>
                                     Belum Upload

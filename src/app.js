@@ -26,6 +26,12 @@ return reader.readAsDataURL(file)
 }
 
 /* API */
+//http://192.168.40.88:4000/api/
+//http://192.168.40.88:4000/login
+
+//http://apimidas.mustikatama.com/api/
+
+// http://apimidas.mustikatama.com/login
 
     let proxy = 'http://192.168.40.88:4000/api/';
     let proxylogin = 'http://192.168.40.88:4000/login';

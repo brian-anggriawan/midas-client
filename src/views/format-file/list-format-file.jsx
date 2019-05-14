@@ -3,7 +3,7 @@ import Pageadmin from 'layouts/page-admin';
 import { Row , Col , Card , CardTitle , CardText , Button ,Input}  from 'reactstrap'; 
 import Scroll from 'simplebar-react';
 import Detail from './list-detail-format-file';
-import app from 'app.js';
+import app from 'app';
 
 
 class Formatfile extends React.Component{

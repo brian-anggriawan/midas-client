@@ -1,5 +1,5 @@
 import React from 'react';
-import Baselistmmodal from 'layouts/list_modal.jsx';
+import Baselistmmodal from 'layouts/list_modal';
 import { BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import {Button , Badge} from 'reactstrap';
 import download from 'downloadjs';
@@ -70,10 +70,7 @@ class listfiledetail extends React.Component{
           };
         return(
             <Baselistmmodal modal= {this.props.modal} mode ={this.props.mode} title ={'List Detail File'}>
-                <div className="row">
-                    <div className="col-md-12">
-                        <div className="card">
-                            <div className="content table-responsive">
+               
                             <Loading modal={this.state.modal} text={'Proses Download'}/>
                             <Scroll>
                                 <BootstrapTable
@@ -117,15 +114,12 @@ class listfiledetail extends React.Component{
                                     <TableHeaderColumn
                                         dataField='ID_FILE'
                                         dataFormat={this.action}
-                                        width='16'>
+                                        width='20%'>
                                         Action
                                     </TableHeaderColumn>
                                 </BootstrapTable>
                             </Scroll>
-                            </div>
-                        </div>
-                    </div>
-                </div>  
+                            
             </Baselistmmodal>
         )
     }

@@ -1,5 +1,5 @@
 import React from 'react';
-import Baselistmmodal from 'layouts/list_modal.jsx';
+import Baselistmmodal from 'layouts/list_modal';
 import app from 'app';
 import {BootstrapTable , TableHeaderColumn} from 'react-bootstrap-table';
 import {Button} from 'reactstrap';
@@ -33,6 +33,7 @@ class formaccessrepo extends React.Component{
                     <BootstrapTable
                         bordered={false}
                         striped
+                        search
                         data={this.props.repo}
                         pagination={true}
                         options= {app.optionTable}

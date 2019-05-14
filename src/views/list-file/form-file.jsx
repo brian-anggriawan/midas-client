@@ -1,5 +1,5 @@
 import React from 'react';
-import Baseformmodal from 'layouts/form-modal.jsx';
+import Baseformmodal from 'layouts/form-modal';
 import { FormGroup , Input  } from 'reactstrap';
 import { StyledDropZone } from 'react-drop-zone';
 import 'react-drop-zone/dist/styles.css';

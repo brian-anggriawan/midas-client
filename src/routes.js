@@ -1,8 +1,9 @@
-import listRepository from "views/list-repository/list-repository.jsx";
+import listRepository from "views/list-repository/list-repository";
 import listFile from "views/list-file/list-file";
 import listAccRepo from "views/list-access-repo/list-access-repo";
 import formatFile from 'views/format-file/list-format-file';
 import LaporanAnalis from 'views/laporan-analisa/list-laporan-analisa';
+import Importrepo from 'views/import-repo/import-repo';
 import Index from 'views/index';
 import Auth from 'withAuth';
 
@@ -42,6 +43,13 @@ import Auth from 'withAuth';
         name: "Laporan Analisa",
         icon: "ni ni-single-copy-04 text-green",
         component: Auth(LaporanAnalis),
+        layout: "/admin"
+      },
+      {
+        path: "/Import-repo",
+        name: "Import Repository",
+        icon: "ni ni-cloud-download-95 text-gray",
+        component: Auth(Importrepo),
         layout: "/admin"
       }
     ]

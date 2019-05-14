@@ -18,13 +18,13 @@ class formModal extends React.Component{
         return (
             <React.Fragment>  
             <Modal
-                className = 'modal-dialog-centered v_lg'
+                className = 'modal-dialog-centered'
                 isOpen = {this.props.modal}
                 toggle = {this.props.mode}
-                size ='lg'
+                size='lg'
             >
                 <div className='modal-header'>
-                    <h5 className='modal-title' id='exampleModalLabel'>
+                    <h5 className='modal-title'>
                         {this.props.title}
                     </h5>
                     <Button

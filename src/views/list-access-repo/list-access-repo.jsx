@@ -1,9 +1,10 @@
 import React from 'react';
 import { BootstrapTable , TableHeaderColumn } from 'react-bootstrap-table';
 import Pageadmin from 'layouts/page-admin';
-import { Input ,Row , Col , FormGroup , Button } from 'reactstrap';
+import { Row , Col , FormGroup , Button } from 'reactstrap';
 import Formacc from './form_access_repo';
 import Scroll from 'simplebar-react';
+import Select from 'react-select';
 import app from 'app';
 
 
@@ -17,7 +18,10 @@ constructor(){
         data:[],
         modal: false,
         repo:[],
-        iduser:''
+        idsbu:'',
+        iddept:'',
+        iduser:'',
+
     }
 }
 
@@ -25,33 +29,56 @@ constructor(){
 componentDidMount(){
     app.apiGet('sbu')
        .then(res =>{
+
+        let data = [];
+        res.map( x =>
+                data.push({
+                    value: x.SYSTEM_ID,
+                    label: x.SBU
+                })
+            )
            this.setState({
-               sbu: res
+               sbu: data
            })
        })
 }
 
 dpt = (e)=>{
-    app.apiGet1('dpt',e.target.value)
+    app.apiGet1('dpt',e.value)
        .then(res =>{
+           let data = [];
+           res.map(x =>
+                data.push({
+                    value: x.SYSTEM_ID,
+                    label: x.DIVISION
+                })
+            )
            this.setState({
-               dpt: res
+               dpt: data,
+               idsbu: e.value
            })
        })  
 }
 
 user = (e) =>{
-    let sbu = document.getElementById('sbu').value;
-
-    app.apiGet2('userFilter',sbu , e.target.value)
+  
+    app.apiGet2('userFilter',this.state.idsbu , e.value)
        .then(res =>{
+           let data = [];
+
+           res.map(x =>
+                data.push({
+                    value: x.IDLOGIN,
+                    label: x.USERNAME
+                })
+            )
            this.setState({
-               user: res
+               user: data
            })
        })
 
 
-    app.apiGet1('accessrepo/repo',e.target.value)
+    app.apiGet1('accessrepo/repo',e.value)
        .then(res =>{
            this.setState({
                repo: res
@@ -59,10 +86,8 @@ user = (e) =>{
     })
 }
 
-data = () =>{
-
-let id = document.getElementById('user').value;
-  app.apiGet1('accessrepo',id)
+data = (e) =>{
+  app.apiGet1('accessrepo',e.value)
      .then(res =>{
         this.setState({
             data: res
@@ -71,8 +96,18 @@ let id = document.getElementById('user').value;
      })  
 
      this.setState({
-         iduser: id
+         iduser: e.value
      }) 
+}
+
+refresh = () =>{
+    app.apiGet1('accessrepo',this.state.iduser)
+     .then(res =>{
+        this.setState({
+            data: res
+        })
+         
+     })  
 }
 
 mode = ()=>{
@@ -88,7 +123,7 @@ delete(idrepo){
     })
        .then(data =>{
            if (data) {
-               this.data();
+               this.refresh();
            }
        })
 }
@@ -106,44 +141,22 @@ render(){
             <Row style={{marginBottom:'20px'}}>
                 <Col md='3'>
                     <FormGroup>
-                        <Input type='select' onChange={this.dpt} id="sbu">
-                        <option value="0">Pilih SBU</option>
-                            {
-                                this.state.sbu.map(data =>
-                                 <option key={data.SYSTEM_ID} value={data.SYSTEM_ID}>{data.SBU}</option>   
-                                )
-                            }
-                        </Input>
+                        <Select options={this.state.sbu} placeholder={'Pilih SBU'} onChange={this.dpt} id='sbu' />
                     </FormGroup>
                 </Col>
                 <Col md='3'>
                     <FormGroup>
-                        <Input type='select' onChange={this.user} id="dpt">
-                        <option value="0">Pilih Division</option>
-                        {
-                            this.state.dpt.map(data =>
-                                <option key={data.SYSTEM_ID} value={data.SYSTEM_ID}>{data.DIVISION}</option>    
-                            )
-                        }
-                        </Input>
+                        <Select options={this.state.dpt} placeholder={'Pilih Division'} onChange={this.user} />
                     </FormGroup>
                 </Col>
                 <Col md='3'>
                     <FormGroup>
-                        <Input type='select' id="user">
-                        <option value="0" >Pilih User</option>
-                        {
-                            this.state.user.map(data =>
-                                <option key={data.IDLOGIN} value={data.IDLOGIN}>{data.USERNAME}</option>    
-                            )
-                        }
-                        </Input>              
+                        <Select options={this.state.user} placeholder={'Pilih User'} onChange={this.data} />              
                     </FormGroup>    
-                </Col>
-                <Button type="Button" onClick={this.data} color="default">Cari Data</Button>    
+                </Col> 
             </Row>
             <Button type="button" color='default' onClick={this.mode} style={{marginBottom:'20px'}}>Tambah Akses Repository</Button>
-            <Formacc modal={this.state.modal} mode={this.mode} repo ={this.state.repo} user={this.state.iduser} test={this.data} />
+            <Formacc modal={this.state.modal} mode={this.mode} repo ={this.state.repo} user={this.state.iduser} test={this.refresh} />
             <Scroll>
                 <BootstrapTable
                     bordered={false}
