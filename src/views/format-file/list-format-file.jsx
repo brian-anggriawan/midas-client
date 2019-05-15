@@ -13,7 +13,8 @@ class Formatfile extends React.Component{
             laporan: [],
             idrepo:'',
             modal: false,
-            detail: []
+            detail: [],
+            filterLaporan:''
         }
     }
 
@@ -78,15 +79,27 @@ class Formatfile extends React.Component{
             } 
     }
 
+    Filter = (e) =>{
+        this.setState({
+            filterLaporan: e.target.value
+        })
+    }
 
     render(){
+
+        let { laporan , filterLaporan } = this.state;
+
+        let data = laporan.filter(x =>{
+            return x.REPOSITORY.toLowerCase().includes(filterLaporan.toLowerCase())
+        })
         return(
             <Pageadmin head={'Format File'}>
             <Detail data={this.state.detail} mode={this.mode} modal={this.state.modal}/>
+            <Input type='text' placeholder='Cari Laporan' onChange={this.Filter}  className='mb-2'/>
             <Scroll style={{height: '700px'}}>
                 <Row >  
                     {
-                        this.state.laporan.map(repo =>
+                        data.map(repo =>
                             <Col sm='4' key={repo.IDACC_REPO}>
                                 <Card className="card-pricing bg-gradient-primary border-0 text-center text-white mb-4" body  >
                                     <CardTitle >{repo.REPOSITORY}</CardTitle>

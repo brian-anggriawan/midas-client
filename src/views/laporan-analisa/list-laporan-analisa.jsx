@@ -5,6 +5,7 @@ import Scroll from 'simplebar-react';
 import { Row , Col , CardTitle , Button , Card , Input , Progress , CardBody} from 'reactstrap';
 import Detail from './list_laporan_detail';
 import app from 'app';
+import Select from 'react-select';
 import './analisa.css';
 
 
@@ -55,7 +56,7 @@ class ListLaporanAnalisa extends React.Component{
     }
 
     dpt = (e)=>{
-        app.apiGet1('dpt',e.target.value)
+        app.apiGet1('dpt',e.value)
            .then(res =>{
                this.setState({
                    dpt: res
@@ -112,10 +113,10 @@ class ListLaporanAnalisa extends React.Component{
         let { idperiod , flag } =  this.state;
 
         this.setState({
-            iddpt: e.target.value
+            iddpt: e.value
         })
 
-        app.apiGet5('laporananalis' ,'sdsds' , idperiod , flag , 'Harian', e.target.value )
+        app.apiGet5('laporananalis' ,'sdsds' , idperiod , flag , 'Harian', e.value )
                .then(res =>{
                    this.setState({
                        data: res
@@ -187,7 +188,7 @@ class ListLaporanAnalisa extends React.Component{
                          
                            <>
                                 <Col sm='3'>
-                                    <Input type="select" id="period" onChange={this.selectPeriod} value={this.state.idperiod}>
+                                    <Input type="select" id="period" style={{ height: '39px'}} onChange={this.selectPeriod} value={this.state.idperiod}>
                                         {
                                             this.state.accperiod.map(data =>
                                             <option key={data.VCIDACCPERIOD} value ={data.VCIDACCPERIOD}>{data.VCDESCRIPTION}</option> 
@@ -196,24 +197,16 @@ class ListLaporanAnalisa extends React.Component{
                                     </Input>
                                 </Col>
                                 <Col sm='3'>
-                                    <Input type='select' onChange={this.dpt} id="sbu">
-                                        <option value="0">Pilih SBU</option>
-                                            {
-                                                this.state.sbu.map(data =>
-                                                <option key={data.SYSTEM_ID} value={data.SYSTEM_ID}>{data.SBU}</option>   
-                                                )
-                                            }
-                                    </Input>
+                                    <Select placeholder={'Pilih SBU'} onChange={this.dpt} options={this.state.sbu.map((x)=>({
+                                        value: x.SYSTEM_ID,
+                                        label: x.SBU
+                                    }))} />
                                 </Col>
                                 <Col sm='3'>
-                                    <Input type='select' onChange={this.dptChange} id="dpt">
-                                        <option value="0">Pilih Division</option>
-                                        {
-                                            this.state.dpt.map(data =>
-                                                <option key={data.SYSTEM_ID} value={data.SYSTEM_ID}>{data.DIVISION}</option>    
-                                            )
-                                        }
-                                    </Input>
+                                    <Select placeholder={'Pilih Division'} onChange={this.dptChange} options={this.state.dpt.map((x)=>({
+                                        value: x.SYSTEM_ID,
+                                        label: x.DIVISION
+                                    }))} />
                                 </Col>
                             </>
                         : <Col md='3'>
@@ -259,6 +252,7 @@ class ListLaporanAnalisa extends React.Component{
                                 data={this.state.data}
                                 bordered={false}
                                 striped
+                                search
                                 pagination={true}
                                 options={app.optionTable}>
                                 <TableHeaderColumn

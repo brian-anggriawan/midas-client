@@ -155,12 +155,13 @@ render(){
                     </FormGroup>    
                 </Col> 
             </Row>
-            <Button type="button" color='default' onClick={this.mode} style={{marginBottom:'20px'}}>Tambah Akses Repository</Button>
+            <Button type="button" color='default' className='mb--1' onClick={this.mode}>Tambah Akses Repository</Button>
             <Formacc modal={this.state.modal} mode={this.mode} repo ={this.state.repo} user={this.state.iduser} test={this.refresh} />
             <Scroll>
                 <BootstrapTable
                     bordered={false}
                     striped
+                    search
                     data={this.state.data}
                     pagination={true}
                     options= {app.optionTable}

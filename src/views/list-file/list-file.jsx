@@ -23,7 +23,8 @@ class listFile extends React.Component{
           loading: false,
           accperiod: [],
           dataform: [],
-          idperiod: app.dataUser[0].ID_PERIOD
+          idperiod: app.dataUser[0].ID_PERIOD,
+          filtercard:''
         }
       }
 
@@ -168,25 +169,37 @@ class listFile extends React.Component{
           
         }
       }
+
+      SearchReport = (e)=>{
+        this.setState({
+          filtercard: e.target.value
+        })
+      }
     
       render() {
+        let { filtercard , repo } = this.state;
+        let filterRepo = repo.filter( x =>{
+         return x.REPOSITORY.toLowerCase().includes(filtercard.toLowerCase())
+        })
+
         return (
           <Pageadmin head={'List File'}>
           <Loading modal={this.state.loading} text={'Proses Download'}/>
           <Listfiledetail modal= {this.state.modal} mode ={this.mode} data ={this.state.filedetail} />
           <Formfile modal={this.state.modal2} mode={this.mode2} data={this.state.dataform} />
-          <Input type="select" id="period" style={{marginBottom: '10px' , width:'23%'}}  onChange={this.selectPeriod} value={this.state.idperiod}>
+          <Input type="select" id="period" className='mb-2 w-25'  onChange={this.selectPeriod} value={this.state.idperiod}>
               {
                 this.state.accperiod.map(data =>
                  <option key={data.VCIDACCPERIOD} value ={data.VCIDACCPERIOD}>{data.VCDESCRIPTION}</option> 
                 )
               }
           </Input>
+          <Input type='text' className='mb-2 w-25' onChange={this.SearchReport} placeholder='Cari Laporan'/>
           <Row>
                 <Col sm="3"> 
                 <Scroll style={{ height: '700px' }}>
                 {
-                  this.state.repo.map(repo =>
+                  filterRepo.map(repo =>
                   <Card id="cardfile" body key={repo.ID_REPO} style={{ marginBottom: '10px' , border: '5px solid lightblue'}}> 
                     <CardText style={{fontSize:'15px'}}>{repo.REPOSITORY}</CardText>
                     <CardText style={{fontSize:'15px'}}>{repo.JENIS_REPO}</CardText>
@@ -194,7 +207,7 @@ class listFile extends React.Component{
                     <div>
                      <Button color="primary" size='sm' style={{width: '100%'}} onClick={()=> this.Showlist(repo.ID_REPO)}>Show File</Button><br/><br/>
                      {
-                       repo.JUMLAH_FORMAT === 0 ? <Button color="default" size='sm' style={{width: '100%'}} disabled >Belum Upload</Button>
+                       repo.JUMLAH_FORMAT === 0 ? <Button color="default" size='sm' style={{width: '100%'}} disabled >Belum Ada Format</Button>
                        : <Button color="default" size='sm' style={{width: '100%'}} onClick={()=> this.Downloadfile(repo.ID_REPO)} >Download Format</Button>
                      }  
                     </div>
