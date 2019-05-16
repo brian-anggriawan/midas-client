@@ -1,6 +1,6 @@
 import React from 'react';
 import Baselistmmodal from 'layouts/list_modal';
-import { BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
+import Tabel from 'layouts/tabel';
 import {Button , Badge} from 'reactstrap';
 import download from 'downloadjs';
 import Loading from 'layouts/loading-modal';
@@ -62,50 +62,35 @@ class detailformat extends React.Component{
     }
 
     render(){
-
-        const options = {
-            sizePerPage: 10,
-            hideSizePerPage: true,
-            prePage: 'Back',
-            nextPage: 'Next',
-          };
         return(
             <Baselistmmodal modal= {this.props.modal} mode ={this.props.mode} title ={'List Format Laporan'}>
                 <Loading modal={this.state.modal} text={'Proses Download'}/>
                 <Scroll>
-                    <BootstrapTable
+                    <Tabel 
+                        keyField ={'ORIGINAL_NAME'}
                         data={this.props.data}
-                        bordered={false}
-                        striped
-                        pagination={true}
-                        options={options}>
-                        <TableHeaderColumn
-                            dataField='TANGGAL_UPLOAD'
-                            width='25%'
-                            isKey = {true}
-                            dataSort>
-                            Tanggal Upload
-                        </TableHeaderColumn>
-                        <TableHeaderColumn
-                            dataField='ORIGINAL_NAME'
-                            width='25%'
-                            dataSort>
-                            File Name
-                        </TableHeaderColumn>
-                        <TableHeaderColumn
-                            dataField='ACTIVE'
-                            dataFormat={this.cekversion}
-                            width='25%'
-                            dataSort>
-                            Status
-                        </TableHeaderColumn>
-                        <TableHeaderColumn
-                            dataField='ID_FORMAT'
-                            dataFormat={this.action}
-                            width='25%'>
-                            Action
-                        </TableHeaderColumn>                                       
-                    </BootstrapTable>
+                        columns={[
+                            {
+                                dataField: 'TANGGAL_UPLOAD',
+                                text: 'Tanggal Upload'
+                            },
+                            {
+                                dataField: 'ORIGINAL_NAME',
+                                text: 'File Name'
+                            },
+                            {
+                                dataField: 'ACTIVE',
+                                text: 'Status',
+                                formatter: this.cekversion
+                            },
+                            {
+                                dataField: 'ID_FORMAT',
+                                text: 'Action',
+                                formatter: this.action
+                            },
+                        ]}
+                    
+                    />
                 </Scroll>                                                                
             </Baselistmmodal>
         )

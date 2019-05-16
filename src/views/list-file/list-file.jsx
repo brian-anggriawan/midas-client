@@ -1,5 +1,4 @@
 import React from 'react';
-import { BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import Pageadmin from 'layouts/page-admin';
 import Formfile from './form-file';
 import Listfiledetail from './list_file_detail';
@@ -7,6 +6,7 @@ import { Button , Row , Col , Card , CardText , Input , Badge } from 'reactstrap
 import Scroll from 'simplebar-react';
 import download from 'downloadjs';
 import Loading from 'layouts/loading-modal';
+import Tabel from 'layouts/tabel';
 import app from 'app';
 
 
@@ -70,8 +70,22 @@ class listFile extends React.Component{
 
         app.apiGet2('uploadfile',repo , this.state.idperiod)
            .then(res =>{
+             let data = [];
+
+             res.map(x =>
+                data.push({
+                  COUNT: x.COUNT,
+                  COUNT1: x.COUNT,
+                  DIRECTORY: x.DIRECTORY,
+                  ID_TEMPLATE: x.ID_TEMPLATE,
+                  LAST_UPLOAD: x.LAST_UPLOAD,
+                  NODOC: x.NODOC,
+                  REPO: x.REPO,
+                  TEMPLATE: x.TEMPLATE
+                })
+              )
             this.setState({
-              groupfile: res
+              groupfile: data
             })
            })
       }
@@ -84,6 +98,7 @@ class listFile extends React.Component{
                   filedetail: res
                 })
                })
+
 
             this.setState({
               modal: true
@@ -217,48 +232,39 @@ class listFile extends React.Component{
                 </Scroll>
                 </Col>
               
-              <Col sm="9" className="table-responsive">
+              <Col sm="9">
                 <Scroll>
-                  <BootstrapTable
-                        data={this.state.groupfile}
-                        bordered={false}
-                        striped
-                        pagination={true}
-                        options={app.optionTable}>
-                          <TableHeaderColumn
-                            dataField='TEMPLATE'
-                            width='16%'
-                            isKey = {true}
-                            dataSort>
-                            Periode
-                          </TableHeaderColumn>
-                          <TableHeaderColumn
-                            dataField='LAST_UPLOAD'
-                            width='16%'
-                            dataSort>
-                            Last Upload
-                          </TableHeaderColumn>
-                          <TableHeaderColumn
-                            dataField='COUNT'
-                            width='16%'
-                            dataSort>
-                            Jumlah File
-                          </TableHeaderColumn>
-                          <TableHeaderColumn
-                            dataField='COUNT'
-                            dataFormat={this.status}
-                            width='16%'
-                            dataSort>
-                            Status
-                          </TableHeaderColumn>      
-                          <TableHeaderColumn
-                            dataField='ID_TEMPLATE'
-                            dataFormat={this.action}
-                            width='16%'
-                            dataSort>
-                            Action
-                          </TableHeaderColumn>
-                      </BootstrapTable>
+                  <Tabel 
+                    keyField={'TEMPLATE'}
+                    data={this.state.groupfile}
+                    columns={[
+                      {
+                        dataField:'TEMPLATE',
+                        text: 'Periode'
+                      },
+                      {
+                        dataField:'LAST_UPLOAD',
+                        text: 'Last Upload'
+                      },
+                      {
+                        dataField:'COUNT',
+                        text: 'Jumlah File'
+                      },
+                      {
+                        dataField:'COUNT1',
+                        text: 'Status',
+                        formatter: this.status
+                      },
+                      {
+                        dataField:'ID_TEMPLATE',
+                        text: 'Action',
+                        formatter: this.action
+                      }
+                    ]}
+
+                    width={{ width:'300px'}}
+                  
+                  />
                   </Scroll>
               </Col>
             </Row>

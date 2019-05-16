@@ -95,7 +95,14 @@ class Formatfile extends React.Component{
         return(
             <Pageadmin head={'Format File'}>
             <Detail data={this.state.detail} mode={this.mode} modal={this.state.modal}/>
-            <Input type='text' placeholder='Cari Laporan' onChange={this.Filter}  className='mb-2'/>
+            <Row>
+                <Col sm='11'>
+                    <Input type='text' placeholder='Cari Laporan' onChange={this.Filter}  className='mb-2'/>
+                </Col>
+                <Col sm='1'>
+                    <h1>{'#' + laporan.length}</h1>
+                </Col>
+            </Row>
             <Scroll style={{height: '700px'}}>
                 <Row >  
                     {

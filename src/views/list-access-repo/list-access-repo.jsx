@@ -76,13 +76,9 @@ user = (e) =>{
                user: data
            })
        })
-
-
-    app.apiGet1('accessrepo/repo',e.value)
-       .then(res =>{
-           this.setState({
-               repo: res
-           })
+    
+    this.setState({
+        iddept: e.value
     })
 }
 
@@ -111,9 +107,24 @@ refresh = () =>{
 }
 
 mode = ()=>{
-    this.setState({
-        modal: !this.state.modal
-    })
+    
+    if (this.state.iduser !== '') {
+        app.apiGet2('accessrepo/repo',this.state.iddept, this.state.iduser)
+        .then(res =>{
+            this.setState({
+                repo: res
+            })
+        })
+        
+        this.setState({
+            modal: !this.state.modal
+        })
+
+    }else{
+        app.msgerror('Belum Memilih User')
+    }
+
+    
 }
 
 delete(idrepo){
@@ -151,7 +162,7 @@ render(){
                 </Col>
                 <Col md='3'>
                     <FormGroup>
-                        <Select options={this.state.user} placeholder={'Pilih User'} onChange={this.data} />              
+                        <Select clearable={true} options={this.state.user} placeholder={'Pilih User'} onChange={this.data} />              
                     </FormGroup>    
                 </Col> 
             </Row>

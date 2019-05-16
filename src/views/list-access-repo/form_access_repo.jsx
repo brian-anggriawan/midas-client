@@ -22,8 +22,8 @@ class formaccessrepo extends React.Component{
                 })
                 .then(res =>{
                     if (res) {
-                        this.props.mode();
                         this.props.test();
+                        this.props.mode();
                     }
                 })
             }else{
@@ -37,7 +37,6 @@ class formaccessrepo extends React.Component{
                     })
                 }
                 this.props.test();
-              
                 this.props.mode();
             }
         }               
