@@ -1,43 +1,30 @@
 import React from 'react';
 import Basemodal from 'layouts/list_modal'
-import {BootstrapTable , TableHeaderColumn} from 'react-bootstrap-table';
-import app from 'app';
+import Table from 'layouts/tabel';
 
 
 
 class listUser extends React.Component{
-
-
     render(){
+      let columns = [
+        {
+          dataField: 'USERNAME',
+          text: 'Nama User'
+        },
+        {
+          dataField: 'SBU',
+          text: 'SBU'
+        },
+        {
+          dataField: 'DIVISION',
+          text: 'DIVISION'
+        }
+    ]
         return(
             <Basemodal modal={this.props.modal} mode={this.props.mode} title={this.props.title}>
-            <BootstrapTable
-               bordered={false}
-               data={this.props.data}
-               striped
-               pagination={true}
-               options={app.optionTable}>
-                 <TableHeaderColumn
-                   dataField='USERNAME'
-                   width='20%'
-                   isKey = {true}
-                   dataSort>
-                   Nama User
-                 </TableHeaderColumn>
-                 <TableHeaderColumn
-                   dataField='SBU'
-                   width='20%'
-                   dataSort>
-                   SBU
-                 </TableHeaderColumn>
-                 <TableHeaderColumn
-                   dataField='DIVISION'
-                   width='20%'
-                   dataSort>
-                   Divisi
-                 </TableHeaderColumn>
-                </BootstrapTable>
+              <Table keyField={'USERNAME'} data={this.props.data} columns={columns} width={{ width: '100%'}} />
             </Basemodal>
+           
         )
     }
 }

@@ -1,10 +1,10 @@
 import React from 'react';
-import { BootstrapTable , TableHeaderColumn } from 'react-bootstrap-table';
 import Pageadmin from 'layouts/page-admin';
 import { Row , Col , FormGroup , Button } from 'reactstrap';
 import Formacc from './form_access_repo';
 import Scroll from 'simplebar-react';
 import Select from 'react-select';
+import Tabel from 'layouts/tabel';
 import app from 'app';
 
 
@@ -158,35 +158,23 @@ render(){
             <Button type="button" color='default' className='mb--1' onClick={this.mode}>Tambah Akses Repository</Button>
             <Formacc modal={this.state.modal} mode={this.mode} repo ={this.state.repo} user={this.state.iduser} test={this.refresh} />
             <Scroll>
-                <BootstrapTable
-                    bordered={false}
-                    striped
-                    search
-                    data={this.state.data}
-                    pagination={true}
-                    options= {app.optionTable}
-                    >
-                    <TableHeaderColumn
-                        dataField='REPOSITORY'
-                        width='16%'
-                        isKey = {true}
-                        dataSort>
-                        Periode
-                    </TableHeaderColumn>
-                    <TableHeaderColumn
-                        dataField='JENIS_REPO'
-                        width='16%'
-                        dataSort>
-                        Kategori
-                    </TableHeaderColumn>   
-                    <TableHeaderColumn
-                        dataField='IDACC_REPO'
-                        dataFormat={this.action}
-                        width='16%'
-                        dataSort>
-                        Action
-                    </TableHeaderColumn>   
-                </BootstrapTable>
+                <Tabel data={this.state.data} columns={[
+                    {
+                        dataField: 'REPOSITORY',
+                        text: 'Priode'
+                    },
+                    {
+                        dataField: 'JENIS_REPO',
+                        text: 'Kategori'
+                    },
+                    {
+                        dataField: 'IDACC_REPO',
+                        formatter: this.action,
+                        text: 'Action'
+                    }
+                
+                ]} keyField={'IDACC_REPO'} width={{width:'380px'}} />
+               
             </Scroll>
         </Pageadmin>
     )

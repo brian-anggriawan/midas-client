@@ -1,10 +1,10 @@
 import React from 'react';
 import Baselistmmodal from 'layouts/list_modal';
-import { BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import {Button } from 'reactstrap';
 import download from 'downloadjs';
 import Loading from 'layouts/loading-modal';
 import Scroll from 'simplebar-react';
+import Tabel from 'layouts/tabel'
 import app from 'app';
 
 
@@ -51,15 +51,8 @@ class listlaporandetail extends React.Component{
 
        }
     }
-
+    
     render(){
-
-        const options = {
-            sizePerPage: 10,
-            hideSizePerPage: true,
-            prePage: 'Back',
-            nextPage: 'Next',
-          };
         return(
             <Baselistmmodal modal= {this.props.modal} mode ={this.props.mode} title ={'List Detail'}>
                 <div className="row">
@@ -70,60 +63,67 @@ class listlaporandetail extends React.Component{
                             <Scroll>
                                 {
                                     this.props.flag === 1 ?
-                                        <BootstrapTable
-                                        data={this.props.data}
-                                        bordered={false}
-                                        striped
-                                        pagination={true}
-                                        options={options}>
-                                        <TableHeaderColumn
-                                            dataField='TEMPLATE'
-                                            width='25%'
-                                            isKey = {true}
-                                            dataSort>
-                                            Periode
-                                        </TableHeaderColumn>
-                                        <TableHeaderColumn
-                                            dataField='LAST_UPLOAD'
-                                            width='25%'
-                                            dataSort>
-                                            Last Upload
-                                        </TableHeaderColumn>
-                                        <TableHeaderColumn
-                                            dataField='JUMLAH_REVISI'
-                                            width='25%'
-                                            dataSort>
-                                            Jumlah Revisi
-                                        </TableHeaderColumn>
-                                        <TableHeaderColumn
-                                            dataField='ID_FILE'
-                                            dataFormat={this.action}
-                                            width='25%'>
-                                            Action
-                                        </TableHeaderColumn>
-                                    </BootstrapTable>
-                                    :
+                                        <Tabel 
+                                            data={this.props.data}
+                                            keyField={'ID_FILE'}
+                                            columns={[
+                                                {
+                                                    dataField:'TEMPLATE',
+                                                    text: 'Periode'
+                                                },
+                                                {
+                                                    dataField: 'LAST_UPLOAD',
+                                                    text:'Last Upload'
+                                                },
+                                                {
+                                                    dataField:'JUMLAH_REVISI',
+                                                    text: 'Jumlah Revisi'
+                                                },
+                                                {
+                                                    dataField:'ID_FILE',
+                                                    text:'Action',
+                                                    formatter: this.action
+                                                }
+                                            ]}
+                                        
+                                        />
+                                    : this.props.flag === 2 ?
+                                    <Tabel 
+                                            keyField={'TEMPLATE'}
+                                            data={this.props.data}
+                                            columns={[
+                                                {
+                                                    dataField: 'REPO',
+                                                    text: 'Laporan'
+                                                },
+                                                {
+                                                    dataField: 'TEMPLATE',
+                                                    text: 'Periode'
+                                                }
+                                            ]}
+                                    
+                                    />
 
-                                    <BootstrapTable
-                                    data={this.props.data}
-                                    bordered={false}
-                                    striped
-                                    pagination={true}
-                                    options={options}>
-                                    <TableHeaderColumn
-                                        dataField='REPO'
-                                        width='50%'
-                                        dataSort>
-                                        Laporan
-                                    </TableHeaderColumn>
-                                    <TableHeaderColumn
-                                        dataField='TEMPLATE'
-                                        width='50%'
-                                        isKey = {true}
-                                        dataSort>
-                                        Periode
-                                    </TableHeaderColumn>
-                                </BootstrapTable>
+                                    : 
+                                    <Tabel 
+                                            keyField={'USERNAME'}
+                                            data={this.props.data}
+                                            columns={[
+                                                {
+                                                    dataField: 'USERNAME',
+                                                    text: 'Nama User'
+                                                },
+                                                {
+                                                    dataField: 'SBU',
+                                                    text: 'SBU'
+                                                },
+                                                {
+                                                    dataField: 'DIVISION',
+                                                    text: 'DIVISION'
+                                                }
+                                            ]}
+                                    />
+                                  
                                 }
                                 
                             </Scroll>

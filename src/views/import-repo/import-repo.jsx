@@ -58,6 +58,10 @@ class Importrepo extends React.Component{
                 }
             })
 
+            this.setState({
+                persen: x
+            })
+
             await this.sleep(500)
         }
 
@@ -81,9 +85,7 @@ class Importrepo extends React.Component{
         /* Convert array of arrays */
         const data = XLSX.utils.sheet_to_json(ws);
         /* Update state */
-        this.setState({ data: data, cols: make_cols(ws['!ref']) }, () => {
-            console.log(this.state.data);
-        });
+        this.setState({ data: data, cols: make_cols(ws['!ref']) });
     
         };
     

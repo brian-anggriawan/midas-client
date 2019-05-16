@@ -4,10 +4,14 @@ const redux  =  require('redux');
 
 /* Variable Global */
     let optionTable = {
+            paginationSize: 5,
+            pageStartIndex: 1,
             sizePerPage: 10,
             hideSizePerPage: true,
             prePage: 'Back',
-            nextPage: 'Next',
+            nextPageText: 'Next',
+            prePageText: 'Back',
+            showTotal: true
         };
 
 
@@ -33,8 +37,8 @@ return reader.readAsDataURL(file)
 
 // http://apimidas.mustikatama.com/login
 
-    let proxy = 'http://apimidas.mustikatama.com/api/';
-    let proxylogin = 'http://apimidas.mustikatama.com/login';
+    let proxy = 'http://192.168.40.88:4000/api/';
+    let proxylogin = 'http://192.168.40.88:4000/login';
     let browserStorage = JSON.parse(localStorage.getItem('user')) || [{IDLOGIN:'00001'}];
     let dataUser = browserStorage; 
 

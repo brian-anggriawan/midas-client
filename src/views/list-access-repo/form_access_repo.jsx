@@ -1,112 +1,96 @@
 import React from 'react';
 import Baselistmmodal from 'layouts/list_modal';
 import app from 'app';
-import {BootstrapTable , TableHeaderColumn} from 'react-bootstrap-table';
-import {Button} from 'reactstrap';
+import {Button , Form , Input} from 'reactstrap';
 import Scroll from 'simplebar-react';
+import Table from 'layouts/tabel';
+import Serilaze from 'form-serialize';
 
 class formaccessrepo extends React.Component{
-    constructor(){
-        super()
-        this.state ={
-            dataSelect : []
-        }
-    }
-
-    action=(idrepo)=>{
-        return <Button color="primary" type="Button" onClick={()=> this.Save(idrepo)} size="sm"> Pilih Repository</Button>
-    }
-
-    Save(idrepo){
-        let user = this.props.user
-
-        app.apiPostJson('accessrepo',{
-            idrepo: idrepo,
-            iduser: user
-        })
-        .then(res =>{
-            if (res) {
-                this.props.mode();
-                this.props.test();
-            }
-        })
-    }
-
-    test = (e) =>{
-        this.state.dataSelect.push({
-            idrepo: e.ID_REPO,
-            iduser: this.props.user
-        })
-    }
 
     proses = () =>{
-        let data = this.state.dataSelect;
-        let count = this.state.dataSelect.length;
-        
-        for(let i  = 0 ; i < count; i++){
-            app.apiPostJson('accessrepo' ,{
-                idrepo: data[i].idrepo,
-                iduser: data[i].iduser
-            })
-        }
-        this.setState({
-            dataSelect:[]
-        })
+        let form = document.getElementById('form');
 
-        this.props.test();
-        this.props.mode();
-            
-           
+        let data = Serilaze(form , { hash: true }).cek;
+        let cek = typeof(data);
+
+        if (data) {
+            if (cek === 'string') {
+                app.apiPostJson('accessrepo' ,{
+                    idrepo: data,
+                    iduser: this.props.user 
+                })
+                .then(res =>{
+                    if (res) {
+                        this.props.mode();
+                        this.props.test();
+                    }
+                })
+            }else{
+                         
+                let count = data.length;
+        
+                for(let i  = 0 ; i < count; i++){
+                    app.apiPostJson('accessrepo' ,{
+                        idrepo: data[i],
+                        iduser: this.props.user
+                    })
+                }
+                this.props.test();
+              
+                this.props.mode();
+            }
+        }               
+    }
+
+    cek = (idrepo) =>{
+        return (
+            <div className="custom-control custom-control-alternative custom-checkbox mb-3">
+            <Input
+              className="custom-control-input"
+              id={idrepo}
+              type="checkbox"
+              name='cek'
+              value={idrepo}
+            />
+            <label className="custom-control-label" htmlFor={idrepo}>
+              Tambah
+            </label>
+          </div>
+        )
     }
 
     render(){
-        let selectRowProp ={
-            mode: "checkbox",
-            clickToSelect: true,
-            bgColor: "rgb(238, 193, 213)",
-            onSelect: this.test
-        }
         return(
             <Baselistmmodal modal={this.props.modal} mode={this.props.mode} title={'Tambah Access Repository'}>
-            <Button type='button' color='success' onClick={this.proses}> Save Multiple </Button>
+            <Button type='button' color='success' onClick={this.proses}> Simpan </Button>
                 <Scroll>
-                    <BootstrapTable
-                        bordered={false}
-                        striped
-                        search
+                    <Form id='form'>
+                    <Table
                         data={this.props.repo}
-                        pagination={true}
-                        options= {app.optionTable}
-                        selectRow={selectRowProp}
-                        id='table'
-                        >
-                        <TableHeaderColumn
-                            dataField='REPOSITORY'
-                            width='25%'
-                            isKey = {true}
-                            dataSort>
-                            Repository
-                        </TableHeaderColumn>
-                        <TableHeaderColumn
-                            dataField='KETERANGAN'
-                            width='25%'
-                            dataSort>
-                            Keterangan
-                        </TableHeaderColumn>
-                        <TableHeaderColumn
-                            dataField='JENIS_REPO'
-                            width='25%'
-                            dataSort>
-                            Jenis Repo
-                        </TableHeaderColumn>
-                        <TableHeaderColumn
-                            dataField='ID_REPO'
-                            dataFormat={this.action}
-                            width='25%'
-                            dataSort>
-                            Action
-                        </TableHeaderColumn>
-                    </BootstrapTable>
+                        keyField={'ID_REPO'}
+                        columns ={[
+                            {
+                                dataField: 'REPOSITORY',
+                                text:'Repository'
+                            },
+                            {
+                                dataField: 'KETERANGAN',
+                                text: 'Keterangan'
+                            },
+                            {
+                                dataField: 'JENIS_REPO',
+                                text: 'Jenis Repo'
+                            },
+                            {
+                                dataField: 'ID_REPO',
+                                text: 'Action',
+                                formatter: this.cek
+                            }
+                        ]}
+                        width={{width:'300px'}}   
+                    />
+                    </Form>
                 </Scroll>
             </Baselistmmodal>
         )

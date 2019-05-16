@@ -1,11 +1,11 @@
 import React from 'react';
 import Pageadmin from 'layouts/page-admin';
-import { BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import Scroll from 'simplebar-react';
 import { Row , Col , CardTitle , Button , Card , Input , Progress , CardBody} from 'reactstrap';
 import Detail from './list_laporan_detail';
 import app from 'app';
 import Select from 'react-select';
+import Tabel from 'layouts/tabel';
 import './analisa.css';
 
 
@@ -41,8 +41,24 @@ class ListLaporanAnalisa extends React.Component{
         if (flag === 2) {
             app.apiGet5('laporananalis' ,iduser , idperiod , flag , 'Harian','sss' )
                .then(res =>{
+                   let data =[];
+
+                   res.map(x =>
+                        data.push({
+                            ID_REPO: x.ID_REPO,
+                            ID_REPO1: x.ID_REPO,
+                            ID_REPO2: x.ID_REPO,
+                            REPOSITORY: x.REPOSITORY,
+                            LAST_UPLOAD: x.LAST_UPLOAD,
+                            SUDAH_UPLOAD: x.SUDAH_UPLOAD,
+                            BELUM_UPLOAD: x.BELUM_UPLOAD,
+                            PRESENTASE: x.PRESENTASE,
+                            JENIS_REPO: x.JENIS_REPO
+                        })
+                    
+                    )
                    this.setState({
-                       data: res
+                       data: data
                    })
                })
         }else{
@@ -76,16 +92,46 @@ class ListLaporanAnalisa extends React.Component{
         if (flag === 2) {
             app.apiGet5('laporananalis' ,iduser , idperiod , flag , period,'45454' )
                .then(res =>{
-                   this.setState({
-                       data: res
-                   })
+                let data =[];
+
+                res.map(x =>
+                     data.push({
+                         ID_REPO: x.ID_REPO,
+                         ID_REPO1: x.ID_REPO,
+                         ID_REPO2: x.ID_REPO,
+                         REPOSITORY: x.REPOSITORY,
+                         LAST_UPLOAD: x.LAST_UPLOAD,
+                         SUDAH_UPLOAD: x.SUDAH_UPLOAD,
+                         BELUM_UPLOAD: x.BELUM_UPLOAD,
+                         PRESENTASE: x.PRESENTASE,
+                         JENIS_REPO: x.JENIS_REPO
+                     })
+                 )
+                 this.setState({
+                    data: data
+                })
                })
         }else{
             if (iddpt !== '') {
                 app.apiGet5('laporananalis' ,'sdsds' , idperiod , flag , period, iddpt )
                 .then(res =>{
-                    this.setState({
-                        data: res
+                    let data =[];
+
+                    res.map(x =>
+                         data.push({
+                             ID_REPO: x.ID_REPO,
+                             ID_REPO1: x.ID_REPO,
+                             ID_REPO2: x.ID_REPO,
+                             REPOSITORY: x.REPOSITORY,
+                             LAST_UPLOAD: x.LAST_UPLOAD,
+                             SUDAH_UPLOAD: x.SUDAH_UPLOAD,
+                             BELUM_UPLOAD: x.BELUM_UPLOAD,
+                             PRESENTASE: x.PRESENTASE,
+                             JENIS_REPO: x.JENIS_REPO
+                         })
+                     )
+                     this.setState({
+                        data: data
                     })
                 })   
             }else{
@@ -118,9 +164,24 @@ class ListLaporanAnalisa extends React.Component{
 
         app.apiGet5('laporananalis' ,'sdsds' , idperiod , flag , 'Harian', e.value )
                .then(res =>{
-                   this.setState({
-                       data: res
-                   })
+                let data =[];
+
+                res.map(x =>
+                     data.push({
+                         ID_REPO: x.ID_REPO,
+                         ID_REPO1: x.ID_REPO,
+                         ID_REPO2: x.ID_REPO,
+                         REPOSITORY: x.REPOSITORY,
+                         LAST_UPLOAD: x.LAST_UPLOAD,
+                         SUDAH_UPLOAD: x.SUDAH_UPLOAD,
+                         BELUM_UPLOAD: x.BELUM_UPLOAD,
+                         PRESENTASE: x.PRESENTASE,
+                         JENIS_REPO: x.JENIS_REPO
+                     })
+                 )
+                 this.setState({
+                    data: data
+                })
                })
     }
 
@@ -131,14 +192,23 @@ class ListLaporanAnalisa extends React.Component{
     }
 
     Showdetail = (flag ,idrepo)=>{
-      
-        app.apiGet3('laporananalis',flag,idrepo,this.state.idperiod)
+        if (flag === 3) {
+            app.apiGet1('repository/user',idrepo)
+            .then(res =>{
+                this.setState({
+                    detail: res,
+                    flagmodal: flag
+                })
+            })
+        }else{
+            app.apiGet3('laporananalis',flag,idrepo,this.state.idperiod)
             .then(res =>{
                 this.setState({
                     detail: res,
                     flagmodal:flag
                 })
             })
+        }
         
         this.mode()
        
@@ -151,9 +221,27 @@ class ListLaporanAnalisa extends React.Component{
 
     belumupload=(nilai)=>{
         let data =  this.state.data.filter(data => data.ID_REPO === nilai)[0]
-        return <Button type='button' size='sm' onClick={()=> this.Showdetail(2 , nilai)} color='danger' style={{width: '70px'}}>{data.BELUM_UPLOAD || 0}</Button>
+        let cek  = data.BELUM_UPLOAD || 0;
+        
+        if (cek !==0) {
+            return <Button type='button' size='sm' onClick={()=> this.Showdetail(2 , nilai)} color='danger' style={{width: '70px'}}>{data.BELUM_UPLOAD || 0}</Button>
+        }else{
+            if (data.JENIS_REPO ==='Harian' || data.JENIS_REPO ==='Insidentil' ) {
+                return <Button type='button' size='sm' onClick={()=> this.Showdetail(2 , nilai)} color='danger' style={{width: '70px'}}>{25}</Button>
+            }else if(data.JENIS_REPO ==='Mingguan'){
+                return <Button type='button' size='sm' onClick={()=> this.Showdetail(2 , nilai)} color='danger' style={{width: '70px'}}>{4}</Button>
+            }else if(data.JENIS_REPO === 'Bulanan'){
+                return <Button type='button' size='sm' onClick={()=> this.Showdetail(2 , nilai)} color='danger' style={{width: '70px'}}>{1}</Button>
+            }else if(data.JENIS_REPO === 'Tahunan'){
+                return <Button type='button' size='sm' onClick={()=> this.Showdetail(2 , nilai)} color='danger' style={{width: '70px'}}>{1}</Button>
+            }
+        }
+        
     }
 
+    Showpic =(nilai)=>{
+        return <Button type='button' size='sm' onClick={()=> this.Showdetail(3 , nilai)} color='info' style={{width: '70px'}}>List PIC</Button>  
+    }
 
     render(){
         let periode = [
@@ -248,48 +336,43 @@ class ListLaporanAnalisa extends React.Component{
                     </Col>
                     <Col sm='10'>
                         <Scroll>
-                        <BootstrapTable
-                                data={this.state.data}
-                                bordered={false}
-                                striped
-                                search
-                                pagination={true}
-                                options={app.optionTable}>
-                                <TableHeaderColumn
-                                    dataField='REPOSITORY'
-                                    width='30%'
-                                    isKey = {true}
-                                    dataSort>
-                                    Nama Laporan
-                                </TableHeaderColumn>
-                                <TableHeaderColumn
-                                    dataField='LAST_UPLOAD'
-                                    width='20%'
-                                    dataSort>
-                                    Last Upload
-                                </TableHeaderColumn>
-                                <TableHeaderColumn
-                                    dataField='ID_REPO'
-                                    dataFormat={this.sudahupload}
-                                    width='16%'
-                                    dataSort>
-                                    Sudah Upload
-                                </TableHeaderColumn>
-                                <TableHeaderColumn
-                                    dataField='ID_REPO'
-                                    dataFormat={this.belumupload}
-                                    width='16%'
-                                    dataSort>
-                                    Belum Upload
-                                </TableHeaderColumn>      
-                                <TableHeaderColumn
-                                    dataField='PRESENTASE'
-                                    dataFormat={this.persen}
-                                    width='16%'
-                                    dataSort>
-                                    Persen
-                                </TableHeaderColumn>
-                            </BootstrapTable>
+                        <Tabel
+                            data={this.state.data}
+                            keyField={'ID_REPO'}
+                            columns ={[
+                                {
+                                    dataField: 'REPOSITORY',
+                                    text: 'Nama Laporan'
+                                },
+                                {
+                                    dataField:'LAST_UPLOAD',
+                                    text:'Last Upload'
+                                },
+                                {
+                                    dataField: 'ID_REPO',
+                                    text: 'Sudah Upload',
+                                    formatter: this.sudahupload
+                                },
+                                {
+                                    dataField: 'ID_REPO1',
+                                    text: 'Belum Upload',
+                                    formatter: this.belumupload
+                                },
+                                {
+                                    dataField: 'ID_REPO2',
+                                    text: 'PIC',
+                                    formatter: this.Showpic
+                                },
+                                {
+                                    dataField: 'PRESENTASE',
+                                    text: 'Persen',
+                                    formatter: this.persen
+                                }
+                            ]}
+
+                            width={{ width:'300px'}}
+                        
+                        />
                         </Scroll>
                     </Col>
                 </Row>
