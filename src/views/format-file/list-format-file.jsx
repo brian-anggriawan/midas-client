@@ -12,6 +12,7 @@ class Formatfile extends React.Component{
         this.state = {
             laporan: [],
             idrepo:'',
+            directory:'',
             modal: false,
             detail: [],
             filterLaporan:''
@@ -43,15 +44,16 @@ class Formatfile extends React.Component{
         this.mode();
     }
 
-    Clickupload = (id)=>{
+    Clickupload = (id , directory)=>{
         document.getElementById('file').click();
         this.setState({
-            idrepo: id
+            idrepo: id,
+            directory: directory
         })
     }
 
     upload = () =>{
-        let files = document.getElementById('file').files;
+        let files = document.getElementById('file').files; 
 
         let reader = new FileReader();
             reader.readAsDataURL(files[0]);
@@ -64,6 +66,7 @@ class Formatfile extends React.Component{
               formData.append('blob' , reader.result);
               formData.append('idrepo' , this.state.idrepo);
               formData.append('iduser' ,app.dataUser[0].IDLOGIN);
+              formData.append('dir' ,this.state.directory);
 
               app.apiUpdate('formatfile' , { idrepo: this.state.idrepo})
                  .then((res)=>{
@@ -114,7 +117,7 @@ class Formatfile extends React.Component{
                                     <Input type='file' id='file' hidden onChange={this.upload}/> 
                                     <Row>
                                         <Col sm='6'>
-                                            <Button type='file' size='sm' className="btn-success" onClick={()=> this.Clickupload(repo.ID_REPO)} style={{width:'100%'}}>Upload</Button>
+                                            <Button type='file' size='sm' className="btn-success" onClick={()=> this.Clickupload(repo.ID_REPO , repo.DIRECTORY)} style={{width:'100%'}}>Upload</Button>
                                         </Col>
                                         <Col sm='6'>
                                           {
