@@ -199,6 +199,7 @@ class ListLaporanAnalisa extends React.Component{
                     detail: res,
                     flagmodal: flag
                 })
+                this.mode()
             })
         }else{
             app.apiGet3('laporananalis',flag,idrepo,this.state.idperiod)
@@ -207,11 +208,10 @@ class ListLaporanAnalisa extends React.Component{
                     detail: res,
                     flagmodal:flag
                 })
+                this.mode()
             })
         }
         
-        this.mode()
-       
     }
  
     sudahupload=(nilai)=>{
@@ -308,7 +308,7 @@ class ListLaporanAnalisa extends React.Component{
                         </Col>
                     }
                 </Row>
-                <Row >
+                <Row>
                     <Col sm='2'>
                    
                     {

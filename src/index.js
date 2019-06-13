@@ -7,8 +7,11 @@ import "assets/vendor/@fortawesome/fontawesome-free/css/all.min.css";
 import "assets/scss/argon-dashboard-react.scss";
 import 'simplebar/dist/simplebar.css';
 
+
+
 import AdminLayout from "layouts/Admin.jsx";
 import AuthLayout from "layouts/Auth.jsx";
+
 
 ReactDOM.render(
   <BrowserRouter>

@@ -8,6 +8,7 @@ import Tabel from 'layouts/tabel';
 import app from 'app';
 
 
+
 class listAccessmenu extends React.Component{
 constructor(){
     super()
@@ -27,7 +28,26 @@ constructor(){
 
 
 componentDidMount(){
-    app.apiGet('sbu')
+    let user = app.dataUser[0];
+
+    if (user.ACCESS === 2) {
+            app.apiGet2('userFilter',user.SBU_ID , user.IDDPT)
+            .then(res =>{
+                let data = [];
+    
+                res.map(x =>
+                    data.push({
+                        value: x.IDLOGIN,
+                        label: x.USERNAME
+                    })
+                )
+                this.setState({
+                    user: data
+                })
+            })
+        
+    }else{
+        app.apiGet('sbu')
        .then(res =>{
 
         let data = [];
@@ -41,7 +61,9 @@ componentDidMount(){
                sbu: data
            })
        })
+    }
 }
+
 
 dpt = (e)=>{
     app.apiGet1('dpt',e.value)
@@ -145,27 +167,40 @@ action=(id)=>{
 
 
 
-
 render(){
+
     return(
         <Pageadmin head={'List Access Repository'}>
-            <Row style={{marginBottom:'20px'}}>
-                <Col md='3'>
-                    <FormGroup>
-                        <Select options={this.state.sbu} placeholder={'Pilih SBU'} onChange={this.dpt} id='sbu' />
-                    </FormGroup>
-                </Col>
-                <Col md='3'>
-                    <FormGroup>
-                        <Select options={this.state.dpt} placeholder={'Pilih Division'} onChange={this.user} />
-                    </FormGroup>
-                </Col>
-                <Col md='3'>
-                    <FormGroup>
-                        <Select clearable={true} options={this.state.user} placeholder={'Pilih User'} onChange={this.data} />              
-                    </FormGroup>    
-                </Col> 
-            </Row>
+                {
+                    app.dataUser[0].ACCESS === 2 ?
+                    <Row style={{marginBottom:'20px'}}>
+                        <Col md='3'>
+                            <FormGroup>
+                                <Select clearable={true} options={this.state.user} placeholder={'Pilih User'} onChange={this.data} />              
+                            </FormGroup>    
+                        </Col> 
+                    </Row>
+
+                    :
+                    <Row style={{marginBottom:'20px'}}>
+                        <Col md='3'>
+                            <FormGroup>
+                                <Select options={this.state.sbu} placeholder={'Pilih SBU'} onChange={this.dpt} id='sbu' />
+                            </FormGroup>
+                        </Col>
+                        <Col md='3'>
+                            <FormGroup>
+                                <Select options={this.state.dpt} placeholder={'Pilih Division'} onChange={this.user} />
+                            </FormGroup>
+                        </Col>
+                        <Col md='3'>
+                            <FormGroup>
+                                <Select clearable={true} options={this.state.user} placeholder={'Pilih User'} onChange={this.data} />              
+                            </FormGroup>    
+                        </Col> 
+                    </Row>
+                }
+            
             <Button type="button" color='default' className='mb--1' onClick={this.mode}>Tambah Akses Repository</Button>
             <Formacc modal={this.state.modal} mode={this.mode} repo ={this.state.repo} user={this.state.iduser} test={this.refresh} />
             <Scroll>

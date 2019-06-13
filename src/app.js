@@ -145,6 +145,19 @@ return reader.readAsDataURL(file)
         })
     }
 
+    let apiDelete = (url , data)=>{
+        return fetch(proxy+url,{
+            method: 'delete',
+            headers: head1,
+            body: JSON.stringify(data)
+        })
+        .then(res => res.json())
+        .then(data =>{
+            return data;
+        })
+    }
+
+
     let apiUpdate = (url , data) =>{
         return fetch(proxy+url ,{
             method: 'put',
@@ -169,18 +182,6 @@ return reader.readAsDataURL(file)
         })
     }
 
-    let apiDelete = (url , data) =>{
-        return fetch(proxy + url ,{
-            method: 'delete',
-            headers: head1,
-            body: JSON.stringify(data)
-        })
-        .then(res => res.json())
-        .then(data =>{
-            return data
-        })
-    }
-
 /* API */
 
 /* SWET ALERT */
@@ -200,6 +201,19 @@ return reader.readAsDataURL(file)
         }).then(()=>{
             window.location.href = url
         })
+    }
+
+    let msgdialog = (msg)=>{
+       return sw.fire({
+            title: 'Are you sure?',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: msg
+          }).then((result) => {
+            return result.value
+          })
     }
 /* SWET ALERT */
 
@@ -308,4 +322,5 @@ export default { encode ,
                  optionTable,
                  apiDelete,
                  apiUpdate,
+                 msgdialog,
                  head2}
