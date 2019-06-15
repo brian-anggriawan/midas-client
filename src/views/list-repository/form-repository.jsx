@@ -22,10 +22,7 @@ class formRepository extends React.Component{
             this.setState({
                sbu: res
             })
-         })
-
-
-        
+         })  
    }
 
    Divisi =(e)=>{
@@ -44,6 +41,11 @@ class formRepository extends React.Component{
    let form = document.getElementById('form');
 
    let data = Serilaze(form , { hash: true });
+   let sbu  = document.getElementById('sbu');
+   let dpt = document.getElementById('divisi');
+   
+   data.sbuname = sbu.options[sbu.selectedIndex].text;
+   data.divname = dpt.options[dpt.selectedIndex].text;
 
        if (data.name && data.jenis  && data.ket && data.sbu && data.divisi && data.nodoc ) {
          app.apiPostJson('repository',data)
@@ -72,7 +74,7 @@ class formRepository extends React.Component{
                   </FormGroup>
                   <FormGroup>
                      <Label>SBU</Label>
-                     <Input type="select" name="sbu" onChange={this.Divisi} required>
+                     <Input type="select" name="sbu" onChange={this.Divisi} id='sbu' required>
                         <option value='0'> Pilih SBU </option>
                         {
                            this.state.sbu.map(sbu=>

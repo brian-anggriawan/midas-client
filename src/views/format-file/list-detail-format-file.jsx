@@ -67,7 +67,7 @@ class detailformat extends React.Component{
                 <Loading modal={this.state.modal} text={'Proses Download'}/>
                 <Scroll>
                     <Tabel 
-                        keyField ={'ORIGINAL_NAME'}
+                        keyField ={'ID_FORMAT'}
                         data={this.props.data}
                         columns={[
                             {

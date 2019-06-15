@@ -45,6 +45,8 @@ class formUpload extends React.Component{
               formData.append('repo', this.props.data[0].repo);
               formData.append('blob' , this.state.encode);
               formData.append('user' , app.dataUser[0].IDLOGIN);
+              formData.append('sbu' , app.dataUser[0].SBU);
+              formData.append('dpt' , app.dataUser[0].DIVISION);
 
               let des = formData.get('description'),
                   file = formData.get('file');

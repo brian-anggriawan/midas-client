@@ -23,7 +23,7 @@ import {
 import app from 'app';
 import Select from 'react-select';
 import Serialize from 'form-serialize';
-const proxy = 'http://192.168.40.88:4000/';
+const proxy = 'http://apimidas.mustikatama.com/';
 
 class Auth extends React.Component {
   constructor(){
