@@ -37,8 +37,8 @@ return reader.readAsDataURL(file)
 
 // http://apimidas.mustikatama.com/login
 
-    let proxy = 'http://192.168.40.88:4000/api/';
-    let proxylogin = 'http://192.168.40.88:4000/login';
+    let proxy = 'http://192.168.40.100:4000/api/';
+    let proxylogin = 'http://192.168.40.100:4000/login';
     let browserStorage = JSON.parse(localStorage.getItem('user')) || [{IDLOGIN:'00001'}];
     let dataUser = browserStorage; 
 

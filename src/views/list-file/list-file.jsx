@@ -115,6 +115,7 @@ class listFile extends React.Component{
          let data = [{
            idperiod: this.state.idperiod,
            idtemplate: groupfile.ID_TEMPLATE,
+           tmpname: groupfile.TEMPLATE,
            directory: groupfile.DIRECTORY,
            period : txselect,
            nodoc: groupfile.NODOC,

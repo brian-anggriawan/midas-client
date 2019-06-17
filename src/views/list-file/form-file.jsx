@@ -33,11 +33,13 @@ class formUpload extends React.Component{
       }
 
       Save = ()=>{
+
             let formData = new FormData();
 
               formData.append('file', this.state.files[0]);
               formData.append('description', document.getElementById('description').value );
               formData.append('template', this.props.data[0].idtemplate);
+              formData.append('tmpname', this.props.data[0].tmpname);
               formData.append('idperiod', this.props.data[0].idperiod);
               formData.append('period', this.props.data[0].period);
               formData.append('directory', this.props.data[0].directory);
