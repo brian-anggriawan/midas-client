@@ -6,6 +6,7 @@ import LaporanAnalis from 'views/laporan-analisa/list-laporan-analisa';
 import Importrepo from 'views/import-repo/import-repo';
 import ListUsers from './views/data-users/list-users';
 import SearchReport from './views/search-report/search-report';
+import Chats from './views/chats/list-chats';
 import Index from 'views/index';
 import Auth from 'withAuth';
 
@@ -65,6 +66,13 @@ import Auth from 'withAuth';
         name: "Data Users",
         icon: "ni ni-circle-08 text-yellow",
         component: Auth(ListUsers),
+        layout: "/admin"
+      },
+      {
+        path: "/chats",
+        name: "Chats",
+        icon: "ni ni-email-83 text-danger",
+        component: Auth(Chats),
         layout: "/admin"
       }
     ]
