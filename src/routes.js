@@ -5,9 +5,9 @@ import formatFile from 'views/format-file/list-format-file';
 import LaporanAnalis from 'views/laporan-analisa/list-laporan-analisa';
 import Importrepo from 'views/import-repo/import-repo';
 import ListUsers from './views/data-users/list-users';
+import SearchReport from './views/search-report/search-report';
 import Index from 'views/index';
 import Auth from 'withAuth';
-
 
  let routes;
  let data = JSON.parse(localStorage.getItem('user')) || [{ACCESS:3}];
@@ -37,6 +37,13 @@ import Auth from 'withAuth';
         name: "Accsess Repository",
         icon: "ni ni-folder-17 text-orange",
         component: Auth(listAccRepo),
+        layout: "/admin"
+      },
+      {
+        path: "/search-report",
+        name: "Pencarian Laporan",
+        icon: "ni ni-world text-info",
+        component: Auth(SearchReport),
         layout: "/admin"
       },
       {
@@ -72,6 +79,13 @@ import Auth from 'withAuth';
         layout: "/admin"
       },
       {
+        path: "/search-report",
+        name: "Pencarian Laporan",
+        icon: "ni ni-world text-info",
+        component: Auth(SearchReport),
+        layout: "/admin"
+      },
+      {
         path: "/laporan-analisa",
         name: "Laporan Analisa",
         icon: "ni ni-single-copy-04 text-green",
@@ -97,6 +111,13 @@ import Auth from 'withAuth';
         component: Auth(formatFile),
         layout: "/admin"
         
+      },
+      {
+        path: "/search-report",
+        name: "Pencarian Laporan",
+        icon: "ni ni-world text-info",
+        component: Auth(SearchReport),
+        layout: "/admin"
       },
       {
         path: "/laporan-analisa",

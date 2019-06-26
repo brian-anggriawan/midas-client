@@ -46,7 +46,9 @@ class Importrepo extends React.Component{
                     user:'TEST003',
                     divisi: data[i].IDDPT,
                     sbu: data[i].IDSBU,
-                    nodoc: data[i].NODOC
+                    nodoc: data[i].NODOC,
+                    sbuname: data[i].SBU,
+                    divname: data[i].DIV
                 }
             
             app.apiPostJson('repository',hasil)

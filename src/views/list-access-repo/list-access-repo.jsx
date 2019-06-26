@@ -130,14 +130,24 @@ refresh = () =>{
 
 mode = ()=>{
     
+    let dpt = app.dataUser[0].IDDPT;
+
     if (this.state.iduser !== '') {
-        app.apiGet2('accessrepo/repo',this.state.iddept, this.state.iduser)
-        .then(res =>{
-            this.setState({
-                repo: res
-            })
-        })
-        
+        if (app.dataUser[0].ACCESS === 2) {
+            app.apiGet2('accessrepo/repo',dpt, this.state.iduser)
+                .then(res =>{
+                    this.setState({
+                        repo: res
+                    })
+                })
+        }else{
+            app.apiGet2('accessrepo/repo',this.state.iddept, this.state.iduser)
+                .then(res =>{
+                    this.setState({
+                        repo: res
+                    })
+                })
+        }
         this.setState({
             modal: !this.state.modal
         })
