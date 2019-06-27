@@ -99,6 +99,13 @@ import Auth from 'withAuth';
         icon: "ni ni-single-copy-04 text-green",
         component: Auth(LaporanAnalis),
         layout: "/admin"
+      },
+      {
+        path: "/chats",
+        name: "Chats",
+        icon: "ni ni-email-83 text-danger",
+        component: Auth(Chats),
+        layout: "/admin"
       }
      
     ]
@@ -140,6 +147,13 @@ import Auth from 'withAuth';
         icon: "ni ni-folder-17 text-orange",
         component: Auth(listAccRepo),
         layout: "/admin"
+      },
+      {
+        path: "/chats",
+        name: "Chats",
+        icon: "ni ni-email-83 text-danger",
+        component: Auth(Chats),
+        layout: "/admin"
       }
     ]
    }
@@ -151,7 +165,15 @@ import Auth from 'withAuth';
         icon: "ni ni-archive-2 text-red",
         component: Auth(listFile),
         layout: "/admin"
-      }]
+      },
+      {
+        path: "/chats",
+        name: "Chats",
+        icon: "ni ni-email-83 text-danger",
+        component: Auth(Chats),
+        layout: "/admin"
+      }
+    ]
    }
  
   /*
