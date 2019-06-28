@@ -1,6 +1,17 @@
 import sw from 'sweetalert2';
 import Decode from 'jwt-decode';
 const redux  =  require('redux');
+const Cryptr = require('cryptr');
+const cryp = new Cryptr('brianedp2017');
+
+
+const Enkripsi = (text)=>{
+    return cryp.encrypt(text)
+}
+
+const Deskripsi = (text)=>{
+    return cryp.decrypt(text)
+}
 
 /* Variable Global */
     let optionTable = {
@@ -27,7 +38,8 @@ reader.onloadend = ()=>{
 return reader.readAsDataURL(file)
 
     
-}
+};
+
 
 /* API */
 //http://192.168.40.88:4000/api/
@@ -323,4 +335,6 @@ export default { encode ,
                  apiDelete,
                  apiUpdate,
                  msgdialog,
+                 Enkripsi,
+                 Deskripsi,
                  head2}

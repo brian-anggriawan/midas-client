@@ -47,6 +47,7 @@
     "chart.js": "2.7.3",
     "classnames": "2.2.6",
     "convert-excel-to-json": "^1.6.1",
+    "cryptr": "^4.0.2",
     "downloadjs": "^1.4.7",
     "filepond": "^4.3.5",
     "filepond-plugin-file-encode": "^2.1.4",
