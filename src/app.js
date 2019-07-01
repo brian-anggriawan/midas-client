@@ -6,11 +6,16 @@ const cryp = new Cryptr('brianedp2017');
 
 
 const Enkripsi = (text)=>{
+    
     return cryp.encrypt(text)
 }
 
 const Deskripsi = (text)=>{
-    return cryp.decrypt(text)
+    let data = text || 0;
+
+    if (data !== 0) {
+        return cryp.decrypt(text)   
+    }
 }
 
 /* Variable Global */

@@ -6,7 +6,10 @@ import { Row ,
          Col , 
          Button,
          ListGroupItem,
-         ListGroup
+         ListGroup,
+         Pagination, 
+         PaginationItem, 
+         PaginationLink
         } from 'reactstrap';
 import app from 'app';
 import download from 'downloadjs';
@@ -24,8 +27,17 @@ export default class SearchReport  extends Component {
           result: [],
           modal: false,
           accperiod:[],
-          filtervalue:''
-        };
+          filtervalue:'',
+          currentPage: 1,
+          todosPerPage: 5
+        }
+        this.handleClick = this.handleClick.bind(this);
+      }
+
+      handleClick(event) {
+        this.setState({
+          currentPage: Number(event.target.id)
+        });
       }
 
       componentWillMount(){
@@ -127,7 +139,7 @@ export default class SearchReport  extends Component {
     
     render() {
 
-        const { value, suggestions , result , filtervalue } = this.state;
+        const { value, suggestions , result , filtervalue  , currentPage, todosPerPage} = this.state;
 
         const inputProps = {
         placeholder: 'Cari Laporan Anda',
@@ -135,7 +147,37 @@ export default class SearchReport  extends Component {
         onChange: this.onChange
         };
 
-        const data =  result.filter(x => { 
+        const indexOfLastTodo = currentPage * todosPerPage;
+        const indexOfFirstTodo = indexOfLastTodo - todosPerPage;
+        const currentTodos = result.slice(indexOfFirstTodo, indexOfLastTodo);
+
+
+        const pageNumbers = [];
+        for (let i = 1; i <= Math.ceil(result.length / todosPerPage); i++) {
+          pageNumbers.push(i);
+        }
+
+        const renderPageNumbers = pageNumbers.map(number => {
+          if (number === this.state.currentPage) {
+            return (
+              <PaginationItem key={number} className='active'>
+                <PaginationLink  id={number} onClick={this.handleClick}>
+                  { number }
+                </PaginationLink>
+              </PaginationItem>
+            );   
+          }else{
+            return(
+             <PaginationItem key={number}>
+                <PaginationLink  id={number} onClick={this.handleClick}>
+                  { number }
+                </PaginationLink>
+              </PaginationItem>
+            )
+          }
+        });
+
+        const data =  currentTodos.filter(x => { 
             return x.ID_PERIOD.toLowerCase().includes(filtervalue.toLowerCase())
         });
           
@@ -170,27 +212,33 @@ export default class SearchReport  extends Component {
                     data.map(x =>(
                         <ListGroup flush key={x.ID_FILE}>
                             <ListGroupItem
-                                className="list-group-item-action flex-column align-items-start py-4 px-4"
+                                className="list-group-item-action align-items-start"
                                 onClick={e => e.preventDefault()}
+                                style={{ height:'100px'}}
                             >
                                 <div className="d-flex w-100 justify-content-between">
-                                <div>
-                                    <div className="d-flex w-100 align-items-center">
                                     <Button size='sm' color='success' onClick={()=> this.Downloadfile(x.ID_FILE , x.ORIGINAL_NAME)}> Download </Button>
-                                    </div>
-                                </div>
                                 <small>
                                     {`${x.DIVISION} ${x.PERIODE}`}
                                 </small>
                                 </div>
-                                <h4 className="mt-3 mb-1">{x.REPO}</h4>
-                                <p className="text-sm mb-0">
+                                <h4 className='mt-1'>{x.REPO}</h4>
+                                <p className="text-sm mt--2">
                                 {`${x.JENIS_REPO} ${x.TEMPLATE_NAME} ${x.DTUPLOAD}`}
                                 </p>
                             </ListGroupItem>
                         </ListGroup>))  }  
                         </div>
                 }
+                <nav aria-label="Page navigation example" className='mt-2' >
+                  <Pagination
+                    className="pagination justify-content-center"
+                    listClassName="justify-content-center"
+                  >
+                  {renderPageNumbers}
+                </Pagination>
+              </nav>
+           
             </Page>
         )
     }
