@@ -8,7 +8,6 @@ import {
     Navbar,
     Button,
     ButtonGroup
- 
 } from 'reactstrap';
 import app from 'app';
 import Scroll from 'simplebar-react';
@@ -19,16 +18,15 @@ import { ChatItem , MessageBox } from 'react-chat-elements';
 import "react-notification-alert/dist/animate.css";
 import NotificationAlert from "react-notification-alert";
 import Modal from './list-contact';
-
+import Serialize from 'form-serialize';
 
 const io  = socket('http://192.168.40.100:4000');
 const idUser = app.dataUser[0].IDLOGIN;
 
 export default class ListChats extends Component {
-    _isMounted = false;
 
-    constructor(){
-        super()
+    constructor(props){
+        super(props)
         this.state = {
             users: [],
             filter: '',
@@ -51,6 +49,8 @@ export default class ListChats extends Component {
         this.mode = this.mode.bind(this);
         this.addUser = this.addUser.bind(this);
         this.deleteMode = this.deleteMode.bind(this);
+        this.deleteChats = this.deleteChats.bind(this);
+        this.EmojiClick = this.EmojiClick.bind(this)
     }
 
 
@@ -60,8 +60,6 @@ export default class ListChats extends Component {
 
     
     componentWillMount(){
-        this._isMounted = true;
-
         app.apiGet1('chats/users' , idUser)
             .then(res =>{
                 this.setState({ users: res})
@@ -125,86 +123,93 @@ export default class ListChats extends Component {
         e.preventDefault();
         let { msg  ,name , idname} = this.state;
 
-        app.apiGet('getip')
-        .then(res =>{
-            let data = { 
-                FROM_ID: idUser,
-                TO_ID: idname,
-                FROM: app.dataUser[0].USERNAME,
-                TO: name,
-                MSG: app.Enkripsi(msg),
-                DATE: new Date(),
-                ID_USER: idUser,
-                IP: res
-             }
+        if (msg !== '') {
+            app.apiGet('getip')
+                .then(res =>{
+                    let data = { 
+                        FROM_ID: idUser,
+                        TO_ID: idname,
+                        FROM: app.dataUser[0].USERNAME,
+                        TO: name,
+                        MSG: app.Enkripsi(msg),
+                        DATE: new Date(),
+                        ID_USER: idUser,
+                        IP: res
+                    }
 
-            io.emit('chat' , data );
-            this.setState({ msg: ''})
-        });
-
+                    io.emit('chat' , data );
+                    this.setState({ msg: ''})
+                });
+        }
     }
 
     componentDidMount(){
-        this._isMounted = true;
-        let activePath = window.location.href.replace('http://192.168.40.100:3000/admin/' ,'');
-
         io.on('chat' , (msg)=>{
-            if ((msg.TO_ID === this.state.idname && msg.FROM_ID === idUser) || (msg.FROM_ID === this.state.idname && msg.TO_ID === idUser) ) {
-                let data = [ ...this.state.chats , msg];
-                this.setState({ chats : data });
+            
+            let cek = window.location.pathname.replace('/admin/','');
 
-                if (activePath.toLowerCase() === 'chats' && msg.FROM_ID === idUser) {
+                if (cek === 'chats') {
+                    
+                if ((msg.TO_ID === this.state.idname && msg.FROM_ID === idUser) || (msg.FROM_ID === this.state.idname && msg.TO_ID === idUser) ) {
+                    let data = [ ...this.state.chats , msg];
+                    this.setState({ chats : data });
                     let scroll = document.getElementById('sc');
-                    scroll.scrollTop = scroll.scrollHeight;     
+                        scroll.scrollTop = scroll.scrollHeight;  
+            
+
+                    if (msg.FROM_ID !== idUser) {
+                        app.apiUpdate('chats/updateread' ,{
+                            fromid: msg.TO_ID,
+                            toid: msg.FROM_ID 
+                        });
+                    }
                 }
-                
-                if (msg.FROM_ID !== idUser) {
-                    app.apiUpdate('chats/updateread' ,{
-                        fromid: msg.TO_ID,
-                        toid: msg.FROM_ID 
+
+                if ((msg.TO_ID === idUser && msg.FROM_ID !== this.state.idname ) ) {
+                    let options = {
+                        place: 'br',
+                        message: (
+                        <div className="alert-text" style={{ cursor: 'pointer'}} onClick={()=> this.setName(msg.FROM_ID ,msg.FROM , '' , 1)}>
+                            <span className="alert-title" data-notify="title">
+                            {`Pesan Masuk Dari ${msg.FROM}`}
+                            </span><br/>
+                            <span data-notify="message">
+                            {app.Deskripsi(msg.MSG)}
+                            </span>
+                        </div>
+                        ),
+                        type: "primary",
+                        autoDismiss: 721
+                    };
+                    this.refs.notificationAlert.notificationAlert(options);  
+                }
+
+                setTimeout(()=>{
+                    app.apiGet1('chats/userchat' , idUser)
+                    .then(res =>{
+                        this.setState({ userChat: res})
+
                     });
-                }
+                    
+                }, 1000);
+
             }
-
-            if ((msg.TO_ID === idUser && msg.FROM_ID !== this.state.idname) ) {
-                let options = {
-                    place: 'br',
-                    message: (
-                      <div className="alert-text" style={{ cursor: 'pointer'}} onClick={()=> this.setName(msg.FROM_ID ,msg.FROM , '' , 1)}>
-                        <span className="alert-title" data-notify="title">
-                          {`Pesan Masuk Dari ${msg.FROM}`}
-                        </span><br/>
-                        <span data-notify="message">
-                          {app.Deskripsi(msg.MSG)}
-                        </span>
-                      </div>
-                    ),
-                    type: "primary",
-                    autoDismiss: 721
-                  };
-                  this.refs.notificationAlert.notificationAlert(options);  
-            }
-
-            setTimeout(()=>{
-                app.apiGet1('chats/userchat' , idUser)
-                .then(res =>{
-                    this.setState({ userChat: res})
-
-                });
-                
-            }, 1000);
-
-    
         })
 
 
 
         io.on('istyping' ,(name)=>{
-            this.setState({ istyping: true , typingName: name.fromname , typingDest: name.toname});
+            let cek = window.location.pathname.replace('/admin/','');
+            if (cek === 'chats') {
+                this.setState({ istyping: true , typingName: name.fromname , typingDest: name.toname});
 
-            setTimeout(()=>{ this.setState({ istyping: false}) }, 500);
+                setTimeout(()=>{ this.setState({ istyping: false}) }, 500);     
+            }
+           
         })
+
     }
+
 
     bottom(){
         let scroll = document.getElementById('sc');
@@ -238,6 +243,53 @@ export default class ListChats extends Component {
         })
     }
 
+    deleteChats(){
+        let form = document.getElementById('userlist');
+
+        let data = Serialize( form , { hash: true});
+        let count = Object.keys(data).length;
+
+        if (count === 0) {
+            return app.msgerror('Pilih Dulu')
+        }
+
+        let cek = typeof(data.cek);
+        let hasil = data.cek;
+
+        if (cek === 'string') {
+          app.apiDelete('chats/deleteuserchat',{
+              id: hasil
+          }); 
+        }else{
+            let count = hasil.length;
+
+            for( let i = 0; i < count ; i++){
+                app.apiDelete('chats/deleteuserchat',{
+                    id: hasil[i]
+                });  
+            }
+        }
+ 
+        setTimeout(()=>{
+            app.apiGet1('chats/userchat' , idUser)
+                .then(res =>{
+                    this.setState({ userChat: res , active: false , chats:[] , deleteMode: false})
+
+                });
+        }, 1000);
+
+    }
+
+    EmojiClick( code , emoji){
+        let { msg } = this.state
+        let button = document.getElementById('emoticon');
+        button.click();
+
+        this.setState({ msg: `${msg}` });
+
+        
+    }
+
 
     render() {
         let { users , filter , chats , active , name , msg , istyping ,typingName , typingDest , modal , userChat , deleteMode} = this.state;
@@ -245,6 +297,7 @@ export default class ListChats extends Component {
         let dataUsers = userChat.filter( x =>{
             return x.TO.toLowerCase().includes(filter.toLocaleLowerCase())
         });
+
 
         return (
             <Page head={'Chats MTG'}>
@@ -258,7 +311,7 @@ export default class ListChats extends Component {
                             deleteMode ? 
                             <Row className='mb-2'>
                                 <Col md='6'>
-                                    <Button color='danger' size='sm' type='button' style={{ width:'100%'}}>Delete</Button>
+                                    <Button color='danger' size='sm' type='button' style={{ width:'100%'}} onClick={this.deleteChats}>Delete</Button>
                                 </Col>
                                 <Col md='6'>
                                     <Button color='primary' size='sm' type='button' style={{width:'100%'}} onClick={this.deleteMode}>Cancel</Button>
@@ -290,6 +343,7 @@ export default class ListChats extends Component {
                             <Form id='userlist'>
                             {   
                                 dataUsers.map((x , i) => (
+                                    <div key={i}>
                                         <ChatItem
                                             avatar={require('assets/img/theme/man.png')}
                                             alt={'Reactjs'}
@@ -297,9 +351,24 @@ export default class ListChats extends Component {
                                             subtitle={app.Deskripsi(x.LAST_CHAT)}
                                             statusColor={'#49E20E'}
                                             date={new Date()}
-                                            key={i}
                                             onClick={()=> this.setName(x.TO_ID , x.TO , x.fromid , x.READ)}
                                             unread={x.READ} />  
+                                        {
+                                            deleteMode ? 
+                                            <div className="custom-control custom-control-alternative custom-checkbox mb-3">
+                                            <Input                 
+                                                className="custom-control-input"
+                                                id={x.ID_HD}
+                                                type="checkbox"
+                                                name='cek'
+                                                value={x.ID_HD}
+                                                />
+                                            <label className="custom-control-label" htmlFor={x.ID_HD}>
+                                            {x.TO}
+                                            </label>
+                                         </div> :''
+                                        }
+                                    </div>
                                 ))
                             }
                             </Form>
@@ -350,9 +419,8 @@ export default class ListChats extends Component {
                                             </div>
                                             {
                                                 active ? 
-                                              
                                                         <Form onSubmit={this.SendMsg}>
-                                                            <Input type='text' onChange={this.setMsg} value={msg}/>
+                                                            <Input type='text' id='message' placeholder='Send a message' onChange={this.setMsg} value={msg}/>
                                                         </Form>
                                                   :''
                                             }
