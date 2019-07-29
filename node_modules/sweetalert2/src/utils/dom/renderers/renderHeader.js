@@ -1,28 +1,28 @@
 import * as dom from '../../dom/index.js'
-import { renderCloseButton } from './renderCloseButton'
-import { renderIcon } from './renderIcon'
-import { renderImage } from './renderImage'
-import { renderProgressSteps } from './renderProgressSteps'
-import { renderTitle } from './renderTitle'
+import { renderCloseButton } from './renderCloseButton.js'
+import { renderIcon } from './renderIcon.js'
+import { renderImage } from './renderImage.js'
+import { renderProgressSteps } from './renderProgressSteps.js'
+import { renderTitle } from './renderTitle.js'
 
-export const renderHeader = (params) => {
+export const renderHeader = (instance, params) => {
   const header = dom.getHeader()
 
   // Custom class
   dom.applyCustomClass(header, params.customClass, 'header')
 
   // Progress steps
-  renderProgressSteps(params)
+  renderProgressSteps(instance, params)
 
   // Icon
-  renderIcon(params)
+  renderIcon(instance, params)
 
   // Image
-  renderImage(params)
+  renderImage(instance, params)
 
   // Title
-  renderTitle(params)
+  renderTitle(instance, params)
 
   // Close button
-  renderCloseButton(params)
+  renderCloseButton(instance, params)
 }
