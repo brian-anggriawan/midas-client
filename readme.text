@@ -1,0 +1,2 @@
+deploy 
+    harus ganti koneksi di app.js , auth.js , chat.js

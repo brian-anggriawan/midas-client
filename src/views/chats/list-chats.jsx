@@ -20,7 +20,7 @@ import NotificationAlert from "react-notification-alert";
 import Modal from './list-contact';
 import Serialize from 'form-serialize';
 
-const io  = socket('http://192.168.40.100:4000');
+const io  = socket('http://192.168.0.7:4000');
 const idUser = app.dataUser[0].IDLOGIN;
 
 export default class ListChats extends Component {

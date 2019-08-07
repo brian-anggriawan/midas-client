@@ -49,6 +49,7 @@ class formaccessrepo extends React.Component{
               className="custom-control-input"
               id={idrepo}
               type="checkbox"
+              defaultChecked={false}
               name='cek'
               value={idrepo}
             />
@@ -59,10 +60,25 @@ class formaccessrepo extends React.Component{
         )
     }
 
+    checkAll =() =>{
+        let data = this.props.repo;
+
+        for(let i  = 0 ; i < data.length; i++){
+           
+            app.apiPostJson('accessrepo' ,{
+                idrepo: data[i].ID_REPO,
+                iduser: this.props.user
+            })
+        }
+        this.props.test();
+        this.props.mode();
+    }
+
     render(){
         return(
             <Baselistmmodal modal={this.props.modal} mode={this.props.mode} title={'Tambah Access Repository'}>
             <Button type='button' color='success' onClick={this.proses}> Simpan </Button>
+            <Button type='button' color='info' onClick={this.checkAll}> Centang Semua </Button>
                 <Scroll>
                     <Form id='form'>
                     <Table
