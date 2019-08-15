@@ -221,9 +221,9 @@ class ListLaporanAnalisa extends React.Component{
 
     belumupload=(nilai)=>{
         let data =  this.state.data.filter(data => data.ID_REPO === nilai)[0]
-        let cek  = data.BELUM_UPLOAD || 0;
+        let cek  = data.BELUM_UPLOAD;
         
-        if (cek !==0) {
+        if (cek !== null) {
             return <Button type='button' size='sm' onClick={()=> this.Showdetail(2 , nilai)} color='danger' style={{width: '70px'}}>{data.BELUM_UPLOAD || 0}</Button>
         }else{
             if (data.JENIS_REPO ==='Harian' || data.JENIS_REPO ==='Insidentil' ) {

@@ -120,6 +120,13 @@ import Auth from 'withAuth';
         layout: "/admin"
       },
       {
+        path: "/listrepository",
+        name: "Master Report",
+        icon: "ni ni-laptop text-blue",
+        component: Auth(listRepository),
+        layout: "/admin"
+      },
+      {
         path: "/format-file",
         name: "Format File",
         icon: "ni ni-books text-yellow",

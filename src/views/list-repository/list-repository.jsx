@@ -33,12 +33,14 @@ class listRepository extends React.Component {
   }
 
   componentWillMount(){
-
     app.apiGet('repository')
        .then(res => {
-        this.setState({
-          repo: res
-        })
+         if (app.dataUser[0].ACCESS === 2) {
+            let data = res.filter(x => x.DIVISION === app.dataUser[0].DIVISION );
+            this.setState({ repo: data  })
+         }else{
+            this.setState({ repo: res })
+         }
        });
   }
 
