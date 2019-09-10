@@ -6,6 +6,7 @@ import {Button} from 'reactstrap';
 import Listuser from './list-user';
 import Scroll from 'simplebar-react';
 import Tabel from 'layouts/tabel';
+import Listfile from './list-file-detail';
 
 class listRepository extends React.Component {
   constructor(){
@@ -16,7 +17,10 @@ class listRepository extends React.Component {
       user:[],
       reponame:'',
       modal: false,
-      modal2: false
+      modal2: false,
+      modal3: false,
+      data:[],
+      idperiod: app.dataUser[0].ID_PERIOD
     }
   }
 
@@ -30,6 +34,10 @@ class listRepository extends React.Component {
     this.setState({
       modal2: !this.state.modal2
     }) 
+  }
+
+  mode3 = () =>{
+    this.setState({ modal3: !this.state.modal3 });
   }
 
   componentWillMount(){
@@ -58,8 +66,23 @@ class listRepository extends React.Component {
     this.mode();    
   }
 
+  Showfile(id){
+    app.apiGet3('laporananalis',1,id,this.state.idperiod)
+            .then(res =>{
+                this.setState({
+                    detail: res
+                });
+                this.mode3();
+              }) 
+  }
+
   button =(id)=>{
-    return <Button type="button" size="sm" color="default" onClick={()=> this.Showlist(id)}> List User </Button>
+    return (
+      <div>
+          <Button type="button" size="sm" color="default" onClick={()=> this.Showlist(id)}> List User </Button>
+          <Button type="button" size="sm" color="info" onClick={()=> this.Showfile(id)}> List File </Button>
+      </div>
+    )  
   }
 
 
@@ -99,6 +122,7 @@ class listRepository extends React.Component {
         <Button type='button' color='default' onClick={this.mode2} style={{marginBottom:'10px'}}>Tambah Data</Button>
         <FormRepository modal={this.state.modal2} mode={this.mode2}/>
         <Listuser modal={this.state.modal} mode={this.mode} data={this.state.user} title={this.state.reponame}/>
+        <Listfile mode={this.mode3} modal={this.state.modal3} data={this.state.detail} />
         <Scroll>
           <Tabel keyField={'ID_REPO'} data={this.state.repo} columns={columns} width={{width:'300px'}} />
         </Scroll>

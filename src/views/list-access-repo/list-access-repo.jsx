@@ -116,6 +116,18 @@ data = (e) =>{
      this.setState({
          iduser: e.value
      }) 
+
+        // get list repository
+        let dpt = app.dataUser[0].IDDPT;
+
+         if (app.dataUser[0].ACCESS === 2) {
+             app.apiGet2('accessrepo/repo',dpt, e.value)
+                 .then(res =>{
+                     this.setState({
+                         repo: res
+                     })
+                 })
+         }
 }
 
 refresh = () =>{
@@ -175,6 +187,27 @@ action=(id)=>{
     return <Button color="danger" onClick={()=> this.delete(id)} size="sm"> Delete Hak Akses </Button>
 }
 
+getRepo = (e) =>{
+    app.apiPostJson('accessrepo' ,{
+        idrepo: e.value,
+        iduser: this.state.iduser 
+    })
+    .then(res =>{
+        if (res) {
+            this.refresh();
+
+            let dpt = app.dataUser[0].IDDPT;
+            app.apiGet2('accessrepo/repo',dpt, this.state.user)
+            .then(res =>{
+                this.setState({
+                    repo: res
+                })
+            })
+        }
+    })
+
+}
+
 
 
 render(){
@@ -205,14 +238,18 @@ render(){
                         </Col>
                         <Col md='3'>
                             <FormGroup>
-                                <Select clearable={true} options={this.state.user} placeholder={'Pilih User'} onChange={this.data} />              
+                                <Select clearable={true} options={this.state.user} placeholder={'Pilih User'} onChange={this.data} />             
                             </FormGroup>    
                         </Col> 
                     </Row>
                 }
-            
-            <Button type="button" color='default' className='mb--1' onClick={this.mode}>Tambah Akses Repository</Button>
+            <Button type="button" color='default' className='mb-3' onClick={this.mode}>Tambah Akses Repository</Button>
+            <Select options={this.state.repo.map(x => ({
+                value: x.ID_REPO,
+                label: x.REPOSITORY
+            }))} placeholder={'Pilih Report'} className='mb-3' onChange={this.getRepo}  clearable={true} />
             <Formacc modal={this.state.modal} mode={this.mode} repo ={this.state.repo} user={this.state.iduser} test={this.refresh} />
+            
             <Scroll>
                 <Tabel data={this.state.data} columns={[
                     {
