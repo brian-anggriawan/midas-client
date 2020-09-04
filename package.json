@@ -60,7 +60,7 @@
     "jquery": "^3.4.1",
     "jwt-decode": "^2.2.0",
     "moment": "^2.24.0",
-    "node-sass": "4.11.0",
+    "node-sass": "4.13.1",
     "nouislider": "13.1.1",
     "os-emoji-picker": "^1.1.4",
     "particles.js": "^2.0.0",
