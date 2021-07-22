@@ -94,7 +94,7 @@
     "simplebar-react": "^1.1.0",
     "socket.io-client": "^2.2.0",
     "sweetalert2": "^8.14.0",
-    "xlsx": "^0.14.4"
+    "xlsx": "^0.17.0"
   },
   "devDependencies": {
     "@types/googlemaps": "3.30.18",
